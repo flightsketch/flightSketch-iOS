@@ -9,23 +9,24 @@
 import UIKit
 import CoreBluetooth
 
-class BLEConnectionModelController: NSObject {
-    private var connection: BLEConnection
+class BLEConnectionModelController: NSObject, CBCentralManagerDelegate {
+    
+    
+    private var connection = BLEConnection.sharedInstance
+    
     
     override init() {
-        self.connection = BLEConnection.sharedInstance
+        super.init()
+        configConnection()
         print("hello world")
     }
     
-    func sayHello(){
-        print("hello...")
+    
+    func configConnection() {
+        connection.centralManager.delegate = self
     }
-}
-
-
-
-
-extension BLEConnection: CBCentralManagerDelegate {
+    
+    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
             
@@ -41,30 +42,33 @@ extension BLEConnection: CBCentralManagerDelegate {
             NSLog("powered off")
         case .poweredOn:
             NSLog("powered on")
-            centralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+            
+        connection.centralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         }
     }
     
+    
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
-        if let i = deviceList.index(where: ({ $0.peripheral === peripheral })) {
-            deviceList[i].RSSI = RSSI
-            deviceList[i].lastUpdate = Date()
+        if let i = connection.deviceList.index(where: ({ $0.peripheral === peripheral })) {
+            connection.deviceList[i].RSSI = RSSI
+            connection.deviceList[i].lastUpdate = Date()
             //devTable.reloadData()
         }
         else {
             if (peripheral.name?.range(of:"FltSk-") != nil) {
-                deviceList.append((peripheral, Date(), RSSI))
-                deviceList.sort { ($0.RSSI.floatValue ) > ($1.RSSI.floatValue ) }// optionally sort array to signal strength
+                connection.deviceList.append((peripheral, Date(), RSSI))
+                connection.deviceList.sort { ($0.RSSI.floatValue ) > ($1.RSSI.floatValue ) }// optionally sort array to signal strength
             }
-            //devTable.reloadData()
-            print(deviceList)
+            NotificationCenter.default.post(name: .deviceListChanged, object: self)
+            print(connection.deviceList)
         }
-        
     }
+    
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         //altPeripheral.discoverServices([service_ID])
     }
+    
     
 }

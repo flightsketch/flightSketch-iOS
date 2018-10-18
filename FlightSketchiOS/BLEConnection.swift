@@ -15,20 +15,13 @@ class BLEConnection : NSObject{
     
     var centralManager: CBCentralManager = CBCentralManager()
     var deviceList = [(peripheral: CBPeripheral,  lastUpdate: Date?, RSSI: NSNumber)]()
+    var isConnected: Bool = false
+    var connectedDevice:CBPeripheral?
     
-    
-    
-    
+
     private override init() {
         super.init()
-        centralManager.delegate = self
-        
     }
     
     
-    
-    
-
 }
-
-

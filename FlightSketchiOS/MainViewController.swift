@@ -58,6 +58,6 @@ class MainViewController: UIViewController {
 
 extension Notification.Name {
     static let tn = Notification.Name("tn")
-    static let argentina = Notification.Name("argentina")
+    static let deviceListChanged = Notification.Name("deviceListChanged")
 }
 
