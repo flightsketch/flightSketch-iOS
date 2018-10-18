@@ -18,6 +18,7 @@ class ConnectionsViewController: UIViewController {
         print("nc create")
         NotificationCenter.default.post(name: .tn, object: self)
         // Do any additional setup after loading the view.
+        
     }
     
 

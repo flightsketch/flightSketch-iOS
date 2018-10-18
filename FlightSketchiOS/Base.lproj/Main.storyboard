@@ -21,7 +21,7 @@
                                 <rect key="frame" x="235" y="64" width="140" height="603"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H2O-sa-8HH">
-                                        <rect key="frame" x="10" y="10" width="120" height="30"/>
+                                        <rect key="frame" x="10" y="50" width="120" height="30"/>
                                         <state key="normal" title="Connections">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -32,24 +32,18 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.11208494722578688" green="0.29463205141908294" blue="0.58917584196891193" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="H2O-sa-8HH" firstAttribute="top" secondItem="7LG-2k-gPD" secondAttribute="top" constant="10" id="hIB-Dn-BUZ"/>
+                                    <constraint firstItem="H2O-sa-8HH" firstAttribute="top" secondItem="7LG-2k-gPD" secondAttribute="top" constant="50" id="hIB-Dn-BUZ"/>
                                     <constraint firstAttribute="width" constant="140" id="xDr-Rv-5LB"/>
                                     <constraint firstAttribute="trailing" secondItem="H2O-sa-8HH" secondAttribute="trailing" constant="10" id="xi0-DB-sMW"/>
                                     <constraint firstItem="H2O-sa-8HH" firstAttribute="leading" secondItem="7LG-2k-gPD" secondAttribute="leading" constant="10" id="z6B-9e-g4V"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z0X-9P-zwd">
-                                <rect key="frame" x="50" y="164" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.29368188639999998" green="0.90855731870000001" blue="0.73142714419999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7LG-2k-gPD" secondAttribute="trailing" id="1yd-hG-NYw"/>
                             <constraint firstItem="7LG-2k-gPD" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="QZw-U3-H8w"/>
-                            <constraint firstItem="z0X-9P-zwd" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="Qpz-tP-HOS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7LG-2k-gPD" secondAttribute="bottom" id="Wjy-cE-MBN"/>
-                            <constraint firstItem="z0X-9P-zwd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="qbw-bo-5UG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

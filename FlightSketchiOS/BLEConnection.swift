@@ -7,7 +7,28 @@
 //
 
 import UIKit
+import CoreBluetooth
 
-class BLEConnection : NSObject {
+class BLEConnection : NSObject{
+    
+    static var sharedInstance = BLEConnection()
+    
+    var centralManager: CBCentralManager = CBCentralManager()
+    var deviceList = [(peripheral: CBPeripheral,  lastUpdate: Date?, RSSI: NSNumber)]()
+    
+    
+    
+    
+    private override init() {
+        super.init()
+        centralManager.delegate = self
+        
+    }
+    
+    
+    
+    
 
 }
+
+
