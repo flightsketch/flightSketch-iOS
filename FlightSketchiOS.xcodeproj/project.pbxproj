@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		D2A2BFC32176CAD400645480 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFC22176CAD400645480 /* AppDelegate.swift */; };
-		D2A2BFC52176CAD400645480 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFC42176CAD400645480 /* ViewController.swift */; };
+		D2A2BFC52176CAD400645480 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFC42176CAD400645480 /* MainViewController.swift */; };
 		D2A2BFC82176CAD400645480 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2A2BFC62176CAD400645480 /* Main.storyboard */; };
 		D2A2BFCA2176CAD700645480 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2A2BFC92176CAD700645480 /* Assets.xcassets */; };
 		D2A2BFCD2176CAD700645480 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2A2BFCB2176CAD700645480 /* LaunchScreen.storyboard */; };
 		D2A2BFD82176CAD700645480 /* FlightSketchiOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFD72176CAD700645480 /* FlightSketchiOSTests.swift */; };
 		D2A2BFE32176CAD700645480 /* FlightSketchiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFE22176CAD700645480 /* FlightSketchiOSUITests.swift */; };
+		D2A2BFF121778D1200645480 /* FSDeviceModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFF021778D1200645480 /* FSDeviceModelController.swift */; };
+		D2A2BFF321778D3300645480 /* BLEConnectionModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFF221778D3300645480 /* BLEConnectionModelController.swift */; };
+		D2A2BFF52177915900645480 /* BLEConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFF42177915900645480 /* BLEConnection.swift */; };
+		D2A2BFF721779B3E00645480 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +40,7 @@
 /* Begin PBXFileReference section */
 		D2A2BFBF2176CAD400645480 /* FlightSketchiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlightSketchiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2A2BFC22176CAD400645480 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D2A2BFC42176CAD400645480 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D2A2BFC42176CAD400645480 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		D2A2BFC72176CAD400645480 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D2A2BFC92176CAD700645480 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D2A2BFCC2176CAD700645480 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +51,10 @@
 		D2A2BFDE2176CAD700645480 /* FlightSketchiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlightSketchiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2A2BFE22176CAD700645480 /* FlightSketchiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightSketchiOSUITests.swift; sourceTree = "<group>"; };
 		D2A2BFE42176CAD700645480 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2A2BFF021778D1200645480 /* FSDeviceModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSDeviceModelController.swift; sourceTree = "<group>"; };
+		D2A2BFF221778D3300645480 /* BLEConnectionModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionModelController.swift; sourceTree = "<group>"; };
+		D2A2BFF42177915900645480 /* BLEConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnection.swift; sourceTree = "<group>"; };
+		D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +106,15 @@
 			isa = PBXGroup;
 			children = (
 				D2A2BFC22176CAD400645480 /* AppDelegate.swift */,
-				D2A2BFC42176CAD400645480 /* ViewController.swift */,
+				D2A2BFC42176CAD400645480 /* MainViewController.swift */,
 				D2A2BFC62176CAD400645480 /* Main.storyboard */,
 				D2A2BFC92176CAD700645480 /* Assets.xcassets */,
 				D2A2BFCB2176CAD700645480 /* LaunchScreen.storyboard */,
 				D2A2BFCE2176CAD700645480 /* Info.plist */,
+				D2A2BFF021778D1200645480 /* FSDeviceModelController.swift */,
+				D2A2BFF221778D3300645480 /* BLEConnectionModelController.swift */,
+				D2A2BFF42177915900645480 /* BLEConnection.swift */,
+				D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */,
 			);
 			path = FlightSketchiOS;
 			sourceTree = "<group>";
@@ -256,8 +268,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2A2BFC52176CAD400645480 /* ViewController.swift in Sources */,
+				D2A2BFC52176CAD400645480 /* MainViewController.swift in Sources */,
+				D2A2BFF52177915900645480 /* BLEConnection.swift in Sources */,
+				D2A2BFF721779B3E00645480 /* ConnectionsViewController.swift in Sources */,
+				D2A2BFF321778D3300645480 /* BLEConnectionModelController.swift in Sources */,
 				D2A2BFC32176CAD400645480 /* AppDelegate.swift in Sources */,
+				D2A2BFF121778D1200645480 /* FSDeviceModelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,20 +8,34 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+
+class MainViewController: UIViewController {
 
     @IBOutlet weak var menuTrailingConst: NSLayoutConstraint!
     
     
+    
     var menuShowing = false
+    var connectionController: BLEConnectionModelController = BLEConnectionModelController()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         menuTrailingConst.constant = -200
+        NotificationCenter.default.addObserver(self, selector: #selector(getDataUpdate), name: .tn, object: nil)
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
+    @objc private func getDataUpdate() {
+        print("Notification rx by MainViewController")
+    }
+    
+    func subscribe(for container: ConnectionsViewController) {
+        NotificationCenter.default.addObserver(self, selector: #selector(getDataUpdate), name: .tn, object: nil)
+    }
+    
+    
     @IBAction func toggleMenu(_ sender: Any) {
         if menuShowing {
             menuTrailingConst.constant = -200
@@ -40,5 +54,10 @@ class ViewController: UIViewController {
         
     }
     
+}
+
+extension Notification.Name {
+    static let tn = Notification.Name("tn")
+    static let argentina = Notification.Name("argentina")
 }
 
