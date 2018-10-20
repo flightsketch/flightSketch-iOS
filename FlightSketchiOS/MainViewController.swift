@@ -23,17 +23,19 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         menuTrailingConst.constant = -200
-        NotificationCenter.default.addObserver(self, selector: #selector(getDataUpdate), name: .tn, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FSDeviceUpdate(_:)), name: .FSDeviceUpdate, object: nil)
         
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    @objc private func getDataUpdate() {
-        print("Notification rx by MainViewController")
-    }
-    
-    func subscribe(for container: ConnectionsViewController) {
-        NotificationCenter.default.addObserver(self, selector: #selector(getDataUpdate), name: .tn, object: nil)
+    @objc func FSDeviceUpdate(_ notification: NSNotification) {
+        //print(notification.userInfo ?? "")
+        if let dict = notification.userInfo as NSDictionary? {
+            if let data = dict["data"] as? FSDeviceModel{
+                //print("dataRx:" + data.base64EncodedString())
+                print(data.currentAltitude)
+            }
+        }
     }
     
     
@@ -61,5 +63,6 @@ extension Notification.Name {
     static let tn = Notification.Name("tn")
     static let deviceListChanged = Notification.Name("deviceListChanged")
     static let BLEDataRx = Notification.Name("BLEDataRx")
+    static let FSDeviceUpdate = Notification.Name("FSDeviceUpdate")
 }
 

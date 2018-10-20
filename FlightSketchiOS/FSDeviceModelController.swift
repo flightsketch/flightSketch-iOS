@@ -23,6 +23,7 @@ class FSdeviceModelController: NSObject {
     var downloadFile: [Double] = []
     var fileCounter: Int = 0
     var fileURL: URL = URL(string: "https://www.apple.com")!
+    var FSDevice: FSDeviceModel = FSDeviceModel()
     
     @objc func BLEDataRx(_ notification: NSNotification) {
         //print(notification.userInfo ?? "")
@@ -157,8 +158,16 @@ class FSdeviceModelController: NSObject {
         //tempLabel.text = String((Double(temp)/100.0)*(9.0/5.0)+32.0)
         //altLabel.text = String(format: "%.1f", Double(alt)/10.0 - 1000.0)
         //maxAltLabel.text = String(format: "%.1f", Double(maxAlt)/10.0 - 1000.0)
-        print("temp: " + String(format: "%.1f", (Double(temp)/100.0)*(9.0/5.0)+32.0))
-        print("alt: " + String(format: "%.1f", Double(alt)/10.0 - 1000.0))
+        //print("temp: " + String(format: "%.1f", (Double(temp)/100.0)*(9.0/5.0)+32.0))
+        //print("alt: " + String(format: "%.1f", Double(alt)/10.0 - 1000.0))
+        
+        FSDevice.currentAltitude = Double(alt)/10.0 - 1000.0
+        FSDevice.maxAltitude = Double(maxAlt)/10.0 - 1000.0
+        FSDevice.temp = (Double(temp)/100.0)*(9.0/5.0)+32.0
+        
+        let dataDict:[String: FSDeviceModel] = ["data": FSDevice]
+        NotificationCenter.default.post(name: .FSDeviceUpdate, object: nil, userInfo: dataDict)
+        
         temp = 0
         alt = 0
     }
@@ -169,7 +178,7 @@ class FSdeviceModelController: NSObject {
             batt = batt + Int(dataArray[i]) << (8*i)
         }
         
-        //battV = (3.0*3.3*Double(batt)/4096.0)
+        FSDevice.battVoltage = (3.0*3.3*Double(batt)/4096.0)
         //battVbt.text = String(format: "%.2f", battV)
         
     }
