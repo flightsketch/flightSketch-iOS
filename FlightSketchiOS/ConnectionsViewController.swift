@@ -10,32 +10,15 @@ import UIKit
 import Foundation
 
 class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return BLEConnection.sharedInstance.deviceList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("buildingCells...")
-        let cell = deviceTable.dequeueReusableCell(withIdentifier: "deviceTableCell")!
-        var text = "name"
-        if (BLEConnection.sharedInstance.deviceList[indexPath.row].peripheral.name != nil) {
-            text = BLEConnection.sharedInstance.deviceList[indexPath.row].peripheral.name!
-            text = text + ",         RSSI:"
-            text = text + BLEConnection.sharedInstance.deviceList[indexPath.row].RSSI.stringValue
-        }
-        else {
-            text = "no name"
-        }
-        cell.textLabel?.text = text
-        return cell
-    }
     
 
     @IBOutlet weak var deviceTable: UITableView!
     @IBOutlet weak var deviceTableCellText: UILabel!
-    
+
+
     var connectionController: BLEConnectionModelController = BLEConnectionModelController()
-    
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("nc create")
@@ -45,14 +28,52 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
         deviceTable.dataSource = self
         deviceTable.delegate = self
     }
-    
+
+
     @objc func deviceListChanged(){
         print("deviceListChanged...")
         deviceTable.reloadData()
     }
-    
+
+
     func subscribe(for container: BLEConnectionModelController) {
         NotificationCenter.default.addObserver(self, selector: #selector(deviceListChanged), name: .tn, object: nil)
+    }
+
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return BLEConnection.sharedInstance.deviceList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("buildingCells...")
+        let cell = deviceTable.dequeueReusableCell(withIdentifier: "deviceTableCell") as! DeviceTableViewCell
+        var text = "name"
+        if (BLEConnection.sharedInstance.deviceList[indexPath.row].peripheral.name != nil) {
+            cell.NameLabel.text = BLEConnection.sharedInstance.deviceList[indexPath.row].peripheral.name!
+            text = "RSSI:  "
+            text = text + BLEConnection.sharedInstance.deviceList[indexPath.row].RSSI.stringValue
+            cell.RSSILabel.text = text
+        }
+        else {
+            text = "no name"
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print("selected...")
+        //if(altPeripheral != nil){
+            //centralManager.cancelPeripheralConnection(altPeripheral)
+        //}
+        //btItems[indexPath.row].peripheral.delegate = self
+        //altPeripheral = btItems[indexPath.row].peripheral
+        //centralManager.connect(btItems[indexPath.row].peripheral, options: nil)
+        var cell = (deviceTable.cellForRow(at: indexPath) as! DeviceTableViewCell)
+        cell.ConnectedLabel.isHidden = !cell.ConnectedLabel.isHidden
+        deviceTable.reloadData()
+        
     }
     
 
