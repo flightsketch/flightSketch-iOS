@@ -9,7 +9,7 @@
 import UIKit
 import CoreBluetooth
 
-class BLEConnectionModelController: NSObject, CBCentralManagerDelegate {
+class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     
     private var connection = BLEConnection.sharedInstance
@@ -25,7 +25,9 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate {
     @objc func cleanupDeviceList() {
         for i in (0..<connection.deviceList.count).reversed() {
             if connection.deviceList[i].lastUpdate!.timeIntervalSinceNow < -3.0 { // 2s max inactivity
-                connection.deviceList.remove(at: i)
+                if (connection.deviceList[i].peripheral != BLEConnection.sharedInstance.connectedDevice){
+                    connection.deviceList.remove(at: i)
+                }
                 NotificationCenter.default.post(name: .deviceListChanged, object: self)
             }
         }
@@ -34,6 +36,7 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate {
     
     func configConnection() {
         connection.centralManager.delegate = self
+        connection.controller = self
     }
     
     
@@ -78,11 +81,17 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate {
     
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        print("connected")
+        print("connect")
+        BLEConnection.sharedInstance.connectedDevice = peripheral
+        peripheral.delegate = self
+        BLEConnection.sharedInstance.isConnected = true
+        NotificationCenter.default.post(name: .deviceListChanged, object: self)
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("disconnect")
+        BLEConnection.sharedInstance.connectedDevice = nil
+        BLEConnection.sharedInstance.isConnected = false
     }
     
     

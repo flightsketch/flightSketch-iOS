@@ -54,6 +54,7 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
             text = "RSSI:  "
             text = text + BLEConnection.sharedInstance.deviceList[indexPath.row].RSSI.stringValue
             cell.RSSILabel.text = text
+            cell.ConnectedLabel.isHidden = !BLEConnection.sharedInstance.isConnected
         }
         else {
             text = "no name"
@@ -64,14 +65,13 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //print("selected...")
-        //if(altPeripheral != nil){
-            //centralManager.cancelPeripheralConnection(altPeripheral)
-        //}
-        //btItems[indexPath.row].peripheral.delegate = self
-        //altPeripheral = btItems[indexPath.row].peripheral
-        //centralManager.connect(btItems[indexPath.row].peripheral, options: nil)
-        var cell = (deviceTable.cellForRow(at: indexPath) as! DeviceTableViewCell)
-        cell.ConnectedLabel.isHidden = !cell.ConnectedLabel.isHidden
+        if(BLEConnection.sharedInstance.connectedDevice != nil){  //disconnect from existing device
+            BLEConnection.sharedInstance.centralManager.cancelPeripheralConnection(BLEConnection.sharedInstance.connectedDevice!)
+        }
+        let peripheral = BLEConnection.sharedInstance.deviceList[indexPath.row].peripheral
+        
+        BLEConnection.sharedInstance.centralManager.connect(peripheral, options: nil)
+        
         deviceTable.reloadData()
         
     }
