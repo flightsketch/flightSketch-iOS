@@ -108,15 +108,15 @@
 			isa = PBXGroup;
 			children = (
 				D2A2BFC22176CAD400645480 /* AppDelegate.swift */,
-				D2A2BFC42176CAD400645480 /* MainViewController.swift */,
 				D2A2BFC62176CAD400645480 /* Main.storyboard */,
 				D2A2BFC92176CAD700645480 /* Assets.xcassets */,
 				D2A2BFCB2176CAD700645480 /* LaunchScreen.storyboard */,
 				D2A2BFCE2176CAD700645480 /* Info.plist */,
+				D2A2BFC42176CAD400645480 /* MainViewController.swift */,
+				D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */,
 				D2A2BFF021778D1200645480 /* FSDeviceModelController.swift */,
 				D2A2BFF221778D3300645480 /* BLEConnectionModelController.swift */,
 				D2A2BFF42177915900645480 /* BLEConnection.swift */,
-				D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */,
 				D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */,
 			);
 			path = FlightSketchiOS;

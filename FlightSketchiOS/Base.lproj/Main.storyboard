@@ -31,12 +31,16 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.11208494722578688" green="0.29463205141908294" blue="0.58917584196891193" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="H2O-sa-8HH" firstAttribute="top" secondItem="7LG-2k-gPD" secondAttribute="top" constant="50" id="hIB-Dn-BUZ"/>
                                     <constraint firstAttribute="width" constant="140" id="xDr-Rv-5LB"/>
                                     <constraint firstAttribute="trailing" secondItem="H2O-sa-8HH" secondAttribute="trailing" constant="10" id="xi0-DB-sMW"/>
                                     <constraint firstItem="H2O-sa-8HH" firstAttribute="leading" secondItem="7LG-2k-gPD" secondAttribute="leading" constant="10" id="z6B-9e-g4V"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="27Z-gq-cJl" appends="YES" id="VDq-0p-Vbb"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.29368188639999998" green="0.90855731870000001" blue="0.73142714419999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,6 +63,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="27Z-gq-cJl">
+                    <connections>
+                        <action selector="toggleMenu:" destination="BYZ-38-t0r" id="g8O-hE-c4L"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1076" y="126.38680659670166"/>
         </scene>
