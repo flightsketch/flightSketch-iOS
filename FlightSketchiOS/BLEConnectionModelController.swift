@@ -14,6 +14,8 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
     
     private var connection = BLEConnection.sharedInstance
     var deviceCleanupTimer: Timer!
+    let service_ID = CBUUID(string: "49535343-fe7d-4ae5-8fa9-9fafd205e455")
+    let characteristic_ID = CBUUID(string: "49535343-1E4D-4BD9-BA61-23C647249616")
     
     
     override init() {
@@ -85,7 +87,9 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
         BLEConnection.sharedInstance.connectedDevice = peripheral
         peripheral.delegate = self
         BLEConnection.sharedInstance.isConnected = true
+        peripheral.discoverServices([service_ID])
         NotificationCenter.default.post(name: .deviceListChanged, object: self)
+        
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
@@ -93,6 +97,65 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
         BLEConnection.sharedInstance.connectedDevice = nil
         BLEConnection.sharedInstance.isConnected = false
     }
+    
+    
+    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
+        //print(RSSI)
+        //lbRSSI.text = RSSI.stringValue
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        guard let services = peripheral.services else { return }
+        
+        for service in services {
+            peripheral.discoverCharacteristics([characteristic_ID], for: service)
+            print("service found...")
+            print(service.uuid)
+            print("end service...")
+            
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        guard let characteristics = service.characteristics else { return }
+        
+        for characteristic in characteristics {
+            print(characteristic)
+            if characteristic.properties.contains(.read) {
+                //print("\(characteristic.uuid): properties contains .read")
+            }
+            if characteristic.properties.contains(.notify) {
+                print("\(characteristic.uuid): properties contains .notify")
+                peripheral.setNotifyValue(true, for: characteristic)
+            }
+            if characteristic.properties.contains(.writeWithoutResponse) {
+                print("\(characteristic.uuid): properties contains .writeWithoutResponse")
+                BLEConnection.sharedInstance.txCharacteristic = characteristic
+            }
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic,
+                    error: Error?) {
+        switch characteristic.uuid {
+            
+        default:
+            //print("Unhandled Characteristic UUID: \(characteristic.uuid)")
+            readData(from: characteristic)
+        }
+    }
+    
+    private func readData(from characteristic: CBCharacteristic) {
+        //altPeripheral.readRSSI()
+        //parseData(byte: characteristic.value!)
+        //print(characteristic.value)
+        let dataDict:[String: Data] = ["data": (characteristic.value)!]
+        NotificationCenter.default.post(name: .BLEDataRx, object: nil, userInfo: dataDict)
+    }
+    
+    
+    
+    
     
     
 }

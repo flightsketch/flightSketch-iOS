@@ -18,6 +18,7 @@ class BLEConnection : NSObject{
     var isConnected: Bool = false
     var connectedDevice:CBPeripheral?
     var controller: BLEConnectionModelController?
+    var txCharacteristic: CBCharacteristic?
     
 
     private override init() {

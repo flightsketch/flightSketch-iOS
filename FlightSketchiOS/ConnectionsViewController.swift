@@ -36,9 +36,9 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
 
-    func subscribe(for container: BLEConnectionModelController) {
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceListChanged), name: .tn, object: nil)
-    }
+    //func subscribe(for container: BLEConnectionModelController) {
+    //    NotificationCenter.default.addObserver(self, selector: #selector(deviceListChanged), name: .tn, object: nil)
+    //}
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

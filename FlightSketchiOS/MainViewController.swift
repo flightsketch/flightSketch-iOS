@@ -17,6 +17,7 @@ class MainViewController: UIViewController {
     
     var menuShowing = false
     var connectionController: BLEConnectionModelController = BLEConnectionModelController()
+    var deviceController: FSdeviceModelController = FSdeviceModelController()
     
     
     override func viewDidLoad() {
@@ -59,5 +60,6 @@ class MainViewController: UIViewController {
 extension Notification.Name {
     static let tn = Notification.Name("tn")
     static let deviceListChanged = Notification.Name("deviceListChanged")
+    static let BLEDataRx = Notification.Name("BLEDataRx")
 }
 
