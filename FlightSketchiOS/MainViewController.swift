@@ -12,6 +12,9 @@ import UIKit
 class MainViewController: UIViewController {
 
     @IBOutlet weak var menuTrailingConst: NSLayoutConstraint!
+    @IBOutlet weak var currentAltitudeLabel: UILabel!
+    @IBOutlet weak var maxAltitudeLabel: UILabel!
+    @IBOutlet weak var sensorTempLabel: UILabel!
     
     
     
@@ -33,7 +36,24 @@ class MainViewController: UIViewController {
         if let dict = notification.userInfo as NSDictionary? {
             if let data = dict["data"] as? FSDeviceModel{
                 //print("dataRx:" + data.base64EncodedString())
-                print(data.currentAltitude)
+                if (data.currentAltitude == nil){
+                    currentAltitudeLabel.text = "-----.-"
+                }
+                else {
+                    currentAltitudeLabel.text = String(format: "%.1f", Double(data.currentAltitude!))
+                }
+                if (data.maxAltitude == nil){
+                    maxAltitudeLabel.text = "-----.-"
+                }
+                else {
+                    maxAltitudeLabel.text = String(format: "%.1f", Double(data.maxAltitude!))
+                }
+                if (data.temp == nil){
+                    sensorTempLabel.text = "-----.-"
+                }
+                else {
+                    sensorTempLabel.text = String(format: "%.1f", Double(data.temp!))
+                }
             }
         }
     }

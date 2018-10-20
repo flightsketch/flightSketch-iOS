@@ -44,7 +44,7 @@ class FSdeviceModelController: NSObject {
     
     
     func parseData(byte: Data) {
-        print("rx data")
+        //print("rx data")
         //print(byte.count)
         let byteArray = [UInt8](byte)
         for byte in byteArray {
