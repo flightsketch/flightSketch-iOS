@@ -21,7 +21,7 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("nc create")
+        //print("nc create")
         NotificationCenter.default.post(name: .tn, object: self)
         // Do any additional setup after loading the view.
         NotificationCenter.default.addObserver(self, selector: #selector(deviceListChanged), name: .deviceListChanged, object: nil)
@@ -31,7 +31,7 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
 
 
     @objc func deviceListChanged(){
-        print("deviceListChanged...")
+        //print("deviceListChanged...")
         deviceTable.reloadData()
     }
 
@@ -46,7 +46,7 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("buildingCells...")
+        //print("buildingCells...")
         let cell = deviceTable.dequeueReusableCell(withIdentifier: "deviceTableCell") as! DeviceTableViewCell
         var text = "name"
         if (BLEConnection.sharedInstance.deviceList[indexPath.row].peripheral.name != nil) {
@@ -63,7 +63,7 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        print("selected...")
+        //print("selected...")
         //if(altPeripheral != nil){
             //centralManager.cancelPeripheralConnection(altPeripheral)
         //}

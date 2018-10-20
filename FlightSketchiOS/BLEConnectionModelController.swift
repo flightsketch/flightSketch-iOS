@@ -13,12 +13,22 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate {
     
     
     private var connection = BLEConnection.sharedInstance
+    var deviceCleanupTimer: Timer!
     
     
     override init() {
         super.init()
         configConnection()
-        print("hello world")
+        deviceCleanupTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(cleanupDeviceList), userInfo: nil, repeats: true)
+    }
+    
+    @objc func cleanupDeviceList() {
+        for i in (0..<connection.deviceList.count).reversed() {
+            if connection.deviceList[i].lastUpdate!.timeIntervalSinceNow < -3.0 { // 2s max inactivity
+                connection.deviceList.remove(at: i)
+                NotificationCenter.default.post(name: .deviceListChanged, object: self)
+            }
+        }
     }
     
     
@@ -60,14 +70,19 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate {
                 connection.deviceList.append((peripheral, Date(), RSSI))
                 connection.deviceList.sort { ($0.RSSI.floatValue ) > ($1.RSSI.floatValue ) }// optionally sort array to signal strength
             }
+            
             NotificationCenter.default.post(name: .deviceListChanged, object: self)
-            print(connection.deviceList)
+            //print(connection.deviceList)
         }
     }
     
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        //altPeripheral.discoverServices([service_ID])
+        print("connected")
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("disconnect")
     }
     
     
