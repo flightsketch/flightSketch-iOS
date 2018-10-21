@@ -20,6 +20,7 @@
 		D2A2BFF721779B3E00645480 /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */; };
 		D2A2BFF9217A4D3200645480 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */; };
 		D2A2BFFB217B9C6600645480 /* FSDeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFFA217B9C6600645480 /* FSDeviceModel.swift */; };
+		D2A2BFFD217C4AE400645480 /* DataDownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFFC217C4AE400645480 /* DataDownloadViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		D2A2BFFA217B9C6600645480 /* FSDeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSDeviceModel.swift; sourceTree = "<group>"; };
+		D2A2BFFC217C4AE400645480 /* DataDownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDownloadViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				D2A2BFF42177915900645480 /* BLEConnection.swift */,
 				D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */,
 				D2A2BFFA217B9C6600645480 /* FSDeviceModel.swift */,
+				D2A2BFFC217C4AE400645480 /* DataDownloadViewController.swift */,
 			);
 			path = FlightSketchiOS;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				D2A2BFF52177915900645480 /* BLEConnection.swift in Sources */,
 				D2A2BFFB217B9C6600645480 /* FSDeviceModel.swift in Sources */,
 				D2A2BFF721779B3E00645480 /* ConnectionsViewController.swift in Sources */,
+				D2A2BFFD217C4AE400645480 /* DataDownloadViewController.swift in Sources */,
 				D2A2BFF321778D3300645480 /* BLEConnectionModelController.swift in Sources */,
 				D2A2BFC32176CAD400645480 /* AppDelegate.swift in Sources */,
 				D2A2BFF121778D1200645480 /* FSDeviceModelController.swift in Sources */,

@@ -35,11 +35,35 @@ class FSdeviceModelController: NSObject {
         }
     }
     
+    @objc func setZeroAlt(_ notification: NSNotification) {
+        print("device rx signal")
+        let packet: [UInt8] = [0xf5, 0xf1, 0x00, 0xE6]
+        let dataDict:[String: [UInt8]] = ["data": packet]
+        NotificationCenter.default.post(name: .sendBLEPacket, object: nil, userInfo: dataDict)
+    }
+    
+    @objc func recordData(_ notification: NSNotification) {
+        print("device rx signal")
+        let packet: [UInt8] = [0xf5, 0xf2, 0x00, 0xE7]
+        let dataDict:[String: [UInt8]] = ["data": packet]
+        NotificationCenter.default.post(name: .sendBLEPacket, object: nil, userInfo: dataDict)
+    }
+    
+    @objc func downloadData(_ notification: NSNotification) {
+        print("device rx signal")
+        let packet: [UInt8] = [0xf5, 0xf4, 0x00, 0xE9]
+        let dataDict:[String: [UInt8]] = ["data": packet]
+        NotificationCenter.default.post(name: .sendBLEPacket, object: nil, userInfo: dataDict)
+    }
+    
     
     override init(){
         print("sub")
         super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(BLEDataRx(_:)), name: .BLEDataRx, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setZeroAlt(_:)), name: .setZeroAlt, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(recordData(_:)), name: .recordData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(downloadData(_:)), name: .downloadData, object: nil)
     }
     
     
@@ -189,8 +213,8 @@ class FSdeviceModelController: NSObject {
             fileLength = fileLength + Int(dataArray[i]) << (8*i)
         }
         print("File Length =  \(fileLength)")
-        //downloadFile = Array(repeating: 0, count: fileLength/4)
-        //fileCounter = 0
+        downloadFile = Array(repeating: 0, count: fileLength/4)
+        fileCounter = 0
     }
     
     func parsePacket_type4() {
@@ -202,6 +226,11 @@ class FSdeviceModelController: NSObject {
         
         downloadFile[fileCounter] = Double(alt)/10.0 - 1000.0
         fileCounter = fileCounter + 1
+        if (fileCounter % 10 == 0){
+            let progress = Double(fileCounter)/Double(downloadFile.count)
+            let dataDict:[String: Double] = ["progress": progress]
+            NotificationCenter.default.post(name: .fileDownloadProgressUpdate, object: nil, userInfo: dataDict)
+        }
         //print("rx packet3...")
         //print(Double(alt)/10.0 - 1000.0)
         
@@ -213,7 +242,12 @@ class FSdeviceModelController: NSObject {
         line = line + "\n"
         line = line + "Altitude (ft)\n"
         print("End of file...")
-        //print(downloadFile)
+        
+        let dataDict:[String: Double] = ["progress": 1.0]
+        NotificationCenter.default.post(name: .fileDownloadProgressUpdate, object: nil, userInfo: dataDict)
+        
+        NotificationCenter.default.post(name: .fileDownloadComplete, object: self)
+        
         
         let date = Date();
         // "Nov 2, 2016, 4:48 AM" <-- local time

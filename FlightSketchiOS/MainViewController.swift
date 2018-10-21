@@ -16,10 +16,20 @@ class MainViewController: UIViewController {
     @IBOutlet weak var maxAltitudeLabel: UILabel!
     @IBOutlet weak var sensorTempLabel: UILabel!
     
+    @IBAction func setZeroAlt(_ sender: Any) {
+        print("button")
+        NotificationCenter.default.post(name: .setZeroAlt, object: self)
+    }
+    @IBAction func startRecording(_ sender: Any) {
+        NotificationCenter.default.post(name: .recordData, object: self)
+    }
+    @IBAction func downloadData(_ sender: Any) {
+        NotificationCenter.default.post(name: .downloadData, object: self)
+    }
     
     
     var menuShowing = false
-    var connectionController: BLEConnectionModelController = BLEConnectionModelController()
+    //var connectionController: BLEConnectionModelController = BLEConnectionModelController()
     var deviceController: FSdeviceModelController = FSdeviceModelController()
     
     
@@ -84,5 +94,11 @@ extension Notification.Name {
     static let deviceListChanged = Notification.Name("deviceListChanged")
     static let BLEDataRx = Notification.Name("BLEDataRx")
     static let FSDeviceUpdate = Notification.Name("FSDeviceUpdate")
+    static let setZeroAlt = Notification.Name("setZeroAlt")
+    static let sendBLEPacket = Notification.Name("sendBLEPacket")
+    static let recordData = Notification.Name("recordData")
+    static let downloadData = Notification.Name("downloadData")
+    static let fileDownloadProgressUpdate = Notification.Name("fileDownloadProgressUpdate")
+    static let fileDownloadComplete = Notification.Name("fileDownloadComplete")
 }
 

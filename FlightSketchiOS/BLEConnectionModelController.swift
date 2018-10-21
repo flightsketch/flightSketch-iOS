@@ -22,6 +22,21 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
         super.init()
         configConnection()
         deviceCleanupTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(cleanupDeviceList), userInfo: nil, repeats: true)
+        NotificationCenter.default.removeObserver(self, name: .sendBLEPacket, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sendBLEPacket(_:)), name: .sendBLEPacket, object: nil)
+    }
+    
+    @objc func sendBLEPacket(_ notification: NSNotification) {
+        print("send packet")
+        //print(notification.userInfo ?? "")
+        if let dict = notification.userInfo as NSDictionary? {
+            print("1")
+            if let data = dict["data"] as? [UInt8]{
+                print("2")
+                //print("dataRx:" + data.base64EncodedString())
+                connection.connectedDevice!.writeValue(Data(bytes: data), for: connection.txCharacteristic!, type:CBCharacteristicWriteType.withoutResponse)
+            }
+        }
     }
     
     @objc func cleanupDeviceList() {
