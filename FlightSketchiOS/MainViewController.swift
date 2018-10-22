@@ -100,5 +100,7 @@ extension Notification.Name {
     static let downloadData = Notification.Name("downloadData")
     static let fileDownloadProgressUpdate = Notification.Name("fileDownloadProgressUpdate")
     static let fileDownloadComplete = Notification.Name("fileDownloadComplete")
+    static let saveFileLocally = Notification.Name("saveFileLocally")
+    static let uploadFile = Notification.Name("uploadFile")
 }
 

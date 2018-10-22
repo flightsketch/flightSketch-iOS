@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class FSdeviceModelController: NSObject {
     
@@ -31,6 +32,24 @@ class FSdeviceModelController: NSObject {
             if let data = dict["data"] as? Data{
                 //print("dataRx:" + data.base64EncodedString())
                 parseData(byte: data)
+            }
+        }
+    }
+    
+    @objc func saveFileLocally(_ notification: NSNotification) {
+        //print(notification.userInfo ?? "")
+        if let dict = notification.userInfo as NSDictionary? {
+            if let data = dict["fileName"] as? String{
+                saveFile(file: data)
+            }
+        }
+    }
+    
+    @objc func uploadFile(_ notification: NSNotification) {
+        //print(notification.userInfo ?? "")
+        if let dict = notification.userInfo as NSDictionary? {
+            if let data = dict["fileName"] as? String{
+                uploadFile(file: data)
             }
         }
     }
@@ -64,6 +83,8 @@ class FSdeviceModelController: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(setZeroAlt(_:)), name: .setZeroAlt, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(recordData(_:)), name: .recordData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(downloadData(_:)), name: .downloadData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveFileLocally(_:)), name: .saveFileLocally, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(uploadFile(_:)), name: .uploadFile, object: nil)
     }
     
     
@@ -234,30 +255,32 @@ class FSdeviceModelController: NSObject {
         //print("rx packet3...")
         //print(Double(alt)/10.0 - 1000.0)
         
-        
     }
     
+    
     func parsePacket_type5() {
-        var line = "FlightSketch Header v1.0"
-        line = line + "\n"
-        line = line + "Altitude (ft)\n"
         print("End of file...")
         
         let dataDict:[String: Double] = ["progress": 1.0]
         NotificationCenter.default.post(name: .fileDownloadProgressUpdate, object: nil, userInfo: dataDict)
         
         NotificationCenter.default.post(name: .fileDownloadComplete, object: self)
+    }
+    
+    
+    func parsePacket_type6() {
+        print("packet6")
+        print(dataArray)
+    }
+    
+    
+    func saveFile(file: String){
+        var line = "FlightSketch Header v1.0"
+        line = line + "\n"
+        line = line + "Altitude (ft)\n"
         
+
         
-        let date = Date();
-        // "Nov 2, 2016, 4:48 AM" <-- local time
-        
-        let formatter = DateFormatter();
-        formatter.dateFormat = "yyyy-MM-dd__HH-mm-ss";
-        let dateString = formatter.string(from: date);
-        
-        
-        let file = "FlightSketch__" + dateString + ".csv"
         let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         fileURL = (dir?.appendingPathComponent(file))!
         do {
@@ -284,15 +307,60 @@ class FSdeviceModelController: NSObject {
         } catch {
             print("error...")
         }
-        
-        
     }
     
-    func parsePacket_type6() {
-        print("packet6")
-        print(dataArray)
+    
+    func uploadFile(file: String){
+        let REST_UPLOAD_API_URL = "https://flightsketch.com/api/flights/"
+        let authToken = "Token 8bf4d691fc215ac9489d35394346df2de4863e30"
         
+        let headers = [
+            "Authorization": authToken
+        ]
         
+        let parameters: Parameters = ["title": "test_place",
+                                      "description": "testing swift"]
+        
+        Alamofire.upload(
+            multipartFormData: { multipartFormData in
+                for (key, value) in parameters {
+                    if value is String || value is Int {
+                        multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
+                    }
+                }
+                var dataString: String = "time,altitude\n"
+                var line: String
+                var time = 0.0
+                
+                for i in 0..<self.fileCounter{
+                    line = String(format: "%.3f", time)
+                    line = line + ","
+                    line = line + String(format: "%.1f", self.downloadFile[i])
+                    line = line + "\n"
+                    dataString = dataString + line
+                    time = time + 0.020
+                }
+                
+                let data = dataString.data(using: String.Encoding.utf8, allowLossyConversion: false)!
+                //  multipartFormData.append(self.fileURL, withName: "photo")
+                //data.append(contentsOf: bytes)
+                multipartFormData.append(data, withName: "logFile", fileName: file, mimeType: "application/octet-stream")
+                
+                
+        },
+            to: REST_UPLOAD_API_URL,
+            headers: headers,
+            encodingCompletion: { encodingResult in
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    upload.responseJSON { response in
+                        debugPrint(response)
+                        
+                    }
+                case .failure(let encodingError):
+                    print("encoding Error : \(encodingError)")
+                }
+        })
     }
 
 }

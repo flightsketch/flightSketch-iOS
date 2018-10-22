@@ -11,11 +11,31 @@ import UIKit
 class DataDownloadViewController: UIViewController {
 
     @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var fileNameTextField: UITextField!
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var fileNameLabel: UILabel!
+    @IBOutlet weak var saveLocallyButton: UIButton!
+    @IBOutlet weak var uploadButton: UIButton!
+    
+    @IBAction func saveLocally(_ sender: Any) {
+        let dataDict:[String: String] = ["fileName": fileNameTextField.text!]
+        NotificationCenter.default.post(name: .saveFileLocally, object: nil, userInfo: dataDict)
+    }
+    @IBAction func uploadToWeb(_ sender: Any) {
+        let dataDict:[String: String] = ["fileName": fileNameTextField.text!]
+        NotificationCenter.default.post(name: .uploadFile, object: nil, userInfo: dataDict)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateProgress(_:)), name: .fileDownloadProgressUpdate, object: nil)
-        // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(downloadComplete(_:)), name: .fileDownloadComplete, object: nil)
+        headerLabel.text = "Downloading Data..."
+        fileNameTextField.isHidden = true
+        fileNameLabel.isHidden = true
+        saveLocallyButton.isHidden = true
+        uploadButton.isHidden = true
+        
     }
     
     @objc func updateProgress(_ notification: NSNotification) {
@@ -28,6 +48,30 @@ class DataDownloadViewController: UIViewController {
             }
         }
     }
+    
+    
+    @objc func downloadComplete(_ notification: NSNotification) {
+        let date = Date();
+        // "Nov 2, 2016, 4:48 AM" <-- local time
+        
+        let formatter = DateFormatter();
+        formatter.dateFormat = "yyyy-MM-dd__HH-mm-ss";
+        let dateString = formatter.string(from: date);
+        
+        
+        let file = "FltSk__" + dateString + ".csv"
+        
+        fileNameTextField.text = file
+        fileNameLabel.isHidden = false
+        headerLabel.text = "Download Complete"
+        fileNameTextField.isHidden = false
+        saveLocallyButton.isHidden = false
+        uploadButton.isHidden = false
+    }
+    
+    
+    
+    
     
 
     
