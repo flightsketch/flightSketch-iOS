@@ -16,13 +16,25 @@ class DataDownloadViewController: UIViewController {
     @IBOutlet weak var fileNameLabel: UILabel!
     @IBOutlet weak var saveLocallyButton: UIButton!
     @IBOutlet weak var uploadButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var descriptionTextField: UITextView!
+    
+    @IBAction func fileNameTextFieldPrimaryAction(_ sender: Any) {
+        self.view.endEditing(true)
+    }
+    @IBAction func viewTapGesture(_ sender: Any) {
+        self.view.endEditing(true)
+    }
+    
     
     @IBAction func saveLocally(_ sender: Any) {
         let dataDict:[String: String] = ["fileName": fileNameTextField.text!]
         NotificationCenter.default.post(name: .saveFileLocally, object: nil, userInfo: dataDict)
     }
     @IBAction func uploadToWeb(_ sender: Any) {
-        let dataDict:[String: String] = ["fileName": fileNameTextField.text!]
+        let dataDict:[String: String] = ["fileName": fileNameTextField.text!, "title": titleTextField.text!, "description": descriptionTextField.text]
         NotificationCenter.default.post(name: .uploadFile, object: nil, userInfo: dataDict)
     }
     
@@ -35,6 +47,10 @@ class DataDownloadViewController: UIViewController {
         fileNameLabel.isHidden = true
         saveLocallyButton.isHidden = true
         uploadButton.isHidden = true
+        titleLabel.isHidden = true
+        titleTextField.isHidden = true
+        descriptionLabel.isHidden = true
+        descriptionTextField.isHidden = true
         
     }
     
@@ -62,11 +78,17 @@ class DataDownloadViewController: UIViewController {
         let file = "FltSk__" + dateString + ".csv"
         
         fileNameTextField.text = file
+        titleTextField.text = file
+        descriptionTextField.text = ""
         fileNameLabel.isHidden = false
         headerLabel.text = "Download Complete"
         fileNameTextField.isHidden = false
         saveLocallyButton.isHidden = false
         uploadButton.isHidden = false
+        titleLabel.isHidden = false
+        titleTextField.isHidden = false
+        descriptionLabel.isHidden = false
+        descriptionTextField.isHidden = false
     }
     
     

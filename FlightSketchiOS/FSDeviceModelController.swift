@@ -48,9 +48,8 @@ class FSdeviceModelController: NSObject {
     @objc func uploadFile(_ notification: NSNotification) {
         //print(notification.userInfo ?? "")
         if let dict = notification.userInfo as NSDictionary? {
-            if let data = dict["fileName"] as? String{
-                uploadFile(file: data)
-            }
+            let data = dict["fileName"]
+            uploadFile(file: dict["fileName"] as! String, title: dict["title"] as! String, description: dict["description"] as! String)
         }
     }
     
@@ -310,7 +309,7 @@ class FSdeviceModelController: NSObject {
     }
     
     
-    func uploadFile(file: String){
+    func uploadFile(file: String, title: String, description: String){
         let REST_UPLOAD_API_URL = "https://flightsketch.com/api/flights/"
         let authToken = "Token 8bf4d691fc215ac9489d35394346df2de4863e30"
         
@@ -318,8 +317,8 @@ class FSdeviceModelController: NSObject {
             "Authorization": authToken
         ]
         
-        let parameters: Parameters = ["title": "test_place",
-                                      "description": "testing swift"]
+        let parameters: Parameters = ["title": title,
+                                      "description": description]
         
         Alamofire.upload(
             multipartFormData: { multipartFormData in
