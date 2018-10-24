@@ -311,7 +311,7 @@ class FSdeviceModelController: NSObject {
     
     func uploadFile(file: String, title: String, description: String){
         let REST_UPLOAD_API_URL = "https://flightsketch.com/api/flights/"
-        let authToken = "Token 8bf4d691fc215ac9489d35394346df2de4863e30"
+        let authToken = "Token " + FSUser.sharedInstance.token!
         
         let headers = [
             "Authorization": authToken

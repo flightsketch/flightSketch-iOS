@@ -24,6 +24,9 @@
 		D2A2BFF9217A4D3200645480 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */; };
 		D2A2BFFB217B9C6600645480 /* FSDeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFFA217B9C6600645480 /* FSDeviceModel.swift */; };
 		D2A2BFFD217C4AE400645480 /* DataDownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A2BFFC217C4AE400645480 /* DataDownloadViewController.swift */; };
+		D2E53FF5217F925400647547 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E53FF4217F925400647547 /* AccountViewController.swift */; };
+		D2E53FF7217F935000647547 /* FSUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E53FF6217F935000647547 /* FSUser.swift */; };
+		D2E53FF9217F938C00647547 /* FSUsersModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E53FF8217F938C00647547 /* FSUsersModelController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +73,9 @@
 		D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		D2A2BFFA217B9C6600645480 /* FSDeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSDeviceModel.swift; sourceTree = "<group>"; };
 		D2A2BFFC217C4AE400645480 /* DataDownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDownloadViewController.swift; sourceTree = "<group>"; };
+		D2E53FF4217F925400647547 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		D2E53FF6217F935000647547 /* FSUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSUser.swift; sourceTree = "<group>"; };
+		D2E53FF8217F938C00647547 /* FSUsersModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSUsersModelController.swift; sourceTree = "<group>"; };
 		D8776F52DA920FB3BA541B00 /* Pods_FlightSketchiOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlightSketchiOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB685F40E0029803B465E54A /* Pods-FlightSketchiOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlightSketchiOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlightSketchiOSTests/Pods-FlightSketchiOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		E5D6D3EBCE2D7F4055202186 /* Pods_FlightSketchiOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlightSketchiOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,19 +157,22 @@
 		D2A2BFC12176CAD400645480 /* FlightSketchiOS */ = {
 			isa = PBXGroup;
 			children = (
-				D2A2BFC22176CAD400645480 /* AppDelegate.swift */,
 				D2A2BFC62176CAD400645480 /* Main.storyboard */,
-				D2A2BFC92176CAD700645480 /* Assets.xcassets */,
-				D2A2BFCB2176CAD700645480 /* LaunchScreen.storyboard */,
-				D2A2BFCE2176CAD700645480 /* Info.plist */,
 				D2A2BFC42176CAD400645480 /* MainViewController.swift */,
+				D2A2BFFC217C4AE400645480 /* DataDownloadViewController.swift */,
 				D2A2BFF621779B3E00645480 /* ConnectionsViewController.swift */,
-				D2A2BFF021778D1200645480 /* FSDeviceModelController.swift */,
 				D2A2BFF221778D3300645480 /* BLEConnectionModelController.swift */,
 				D2A2BFF42177915900645480 /* BLEConnection.swift */,
-				D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */,
+				D2E53FF4217F925400647547 /* AccountViewController.swift */,
+				D2E53FF8217F938C00647547 /* FSUsersModelController.swift */,
+				D2E53FF6217F935000647547 /* FSUser.swift */,
+				D2A2BFF021778D1200645480 /* FSDeviceModelController.swift */,
 				D2A2BFFA217B9C6600645480 /* FSDeviceModel.swift */,
-				D2A2BFFC217C4AE400645480 /* DataDownloadViewController.swift */,
+				D2A2BFF8217A4D3200645480 /* DeviceTableViewCell.swift */,
+				D2A2BFC92176CAD700645480 /* Assets.xcassets */,
+				D2A2BFCB2176CAD700645480 /* LaunchScreen.storyboard */,
+				D2A2BFC22176CAD400645480 /* AppDelegate.swift */,
+				D2A2BFCE2176CAD700645480 /* Info.plist */,
 			);
 			path = FlightSketchiOS;
 			sourceTree = "<group>";
@@ -252,6 +261,10 @@
 		D2A2BFB72176CAD300645480 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					0,
+					1,
+				);
 				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Russell P. Parrish";
@@ -415,11 +428,14 @@
 				D2A2BFC52176CAD400645480 /* MainViewController.swift in Sources */,
 				D2A2BFF52177915900645480 /* BLEConnection.swift in Sources */,
 				D2A2BFFB217B9C6600645480 /* FSDeviceModel.swift in Sources */,
+				D2E53FF9217F938C00647547 /* FSUsersModelController.swift in Sources */,
 				D2A2BFF721779B3E00645480 /* ConnectionsViewController.swift in Sources */,
 				D2A2BFFD217C4AE400645480 /* DataDownloadViewController.swift in Sources */,
 				D2A2BFF321778D3300645480 /* BLEConnectionModelController.swift in Sources */,
+				D2E53FF5217F925400647547 /* AccountViewController.swift in Sources */,
 				D2A2BFC32176CAD400645480 /* AppDelegate.swift in Sources */,
 				D2A2BFF121778D1200645480 /* FSDeviceModelController.swift in Sources */,
+				D2E53FF7217F935000647547 /* FSUser.swift in Sources */,
 				D2A2BFF9217A4D3200645480 /* DeviceTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

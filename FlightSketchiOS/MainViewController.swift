@@ -31,7 +31,7 @@ class MainViewController: UIViewController {
     var menuShowing = false
     //var connectionController: BLEConnectionModelController = BLEConnectionModelController()
     var deviceController: FSdeviceModelController = FSdeviceModelController()
-    
+    var userController: FSUsersModelController = FSUsersModelController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,5 +102,6 @@ extension Notification.Name {
     static let fileDownloadComplete = Notification.Name("fileDownloadComplete")
     static let saveFileLocally = Notification.Name("saveFileLocally")
     static let uploadFile = Notification.Name("uploadFile")
+    static let tryLogin = Notification.Name("tryLogin")
 }
 
