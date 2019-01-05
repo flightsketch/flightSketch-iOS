@@ -91,6 +91,8 @@ class FSdeviceModelController: NSObject {
         //print("rx data")
         //print(byte.count)
         let byteArray = [UInt8](byte)
+        print("Array...")
+        print(byteArray)
         for byte in byteArray {
             parseByte(byte: byte)
             //print(byte)
@@ -193,6 +195,15 @@ class FSdeviceModelController: NSObject {
         for i in 0..<4 {
             temp = temp + Int(dataArray[i]) << (8*i)
         }
+        var tempF: Float = 0;
+        memcpy(&tempF, Array(dataArray[0..<4]), 4)
+        var altF: Float = 0;
+        memcpy(&altF, Array(dataArray[4..<8]), 4)
+        var maxF: Float = 0;
+        memcpy(&maxF, Array(dataArray[8..<12]), 4)
+        
+        //print(Array(dataArray[0..<4]))
+        
         for i in 4..<8 {
             alt = alt + Int(dataArray[i]) << (8*(i-4))
         }
@@ -205,10 +216,12 @@ class FSdeviceModelController: NSObject {
         //print("temp: " + String(format: "%.1f", (Double(temp)/100.0)*(9.0/5.0)+32.0))
         //print("alt: " + String(format: "%.1f", Double(alt)/10.0 - 1000.0))
         
-        FSDevice.currentAltitude = Double(alt)/10.0 - 1000.0
-        FSDevice.maxAltitude = Double(maxAlt)/10.0 - 1000.0
-        FSDevice.temp = (Double(temp)/100.0)*(9.0/5.0)+32.0
-        
+        //FSDevice.currentAltitude = Double(alt)/10.0 - 1000.0
+        FSDevice.currentAltitude = Double(altF)
+        //FSDevice.maxAltitude = Double(maxAlt)/10.0 - 1000.0
+        FSDevice.maxAltitude = Double(maxF)
+        //FSDevice.temp = (Double(temp)/100.0)*(9.0/5.0)+32.0
+        FSDevice.temp = (Double(tempF))*(9.0/5.0)+32.0
         let dataDict:[String: FSDeviceModel] = ["data": FSDevice]
         NotificationCenter.default.post(name: .FSDeviceUpdate, object: nil, userInfo: dataDict)
         
@@ -244,7 +257,13 @@ class FSdeviceModelController: NSObject {
             alt = alt + Int(dataArray[i]) << (8*i)
         }
         
-        downloadFile[fileCounter] = Double(alt)/10.0 - 1000.0
+        var altF: Float = 0;
+        memcpy(&altF, Array(dataArray[0..<4]), 4)
+        
+        print("Data... ")
+        print(altF)
+        print("\n")
+        downloadFile[fileCounter] = Double(altF)
         fileCounter = fileCounter + 1
         if (fileCounter % 10 == 0){
             let progress = Double(fileCounter)/Double(downloadFile.count)

@@ -86,7 +86,7 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
             //devTable.reloadData()
         }
         else {
-            if (peripheral.name?.range(of:"FltSk-") != nil) {
+            if (peripheral.name?.range(of:"FlightSketch") != nil) {
                 connection.deviceList.append((peripheral, Date(), RSSI))
                 connection.deviceList.sort { ($0.RSSI.floatValue ) > ($1.RSSI.floatValue ) }// optionally sort array to signal strength
             }
@@ -99,10 +99,12 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("connect")
+        print(connection.deviceList)
         BLEConnection.sharedInstance.connectedDevice = peripheral
         peripheral.delegate = self
         BLEConnection.sharedInstance.isConnected = true
-        peripheral.discoverServices([service_ID])
+        //peripheral.discoverServices([service_ID])
+        peripheral.discoverServices(nil)
         NotificationCenter.default.post(name: .deviceListChanged, object: self)
         
     }
@@ -123,7 +125,8 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
         guard let services = peripheral.services else { return }
         
         for service in services {
-            peripheral.discoverCharacteristics([characteristic_ID], for: service)
+            //peripheral.discoverCharacteristics([characteristic_ID], for: service)
+            peripheral.discoverCharacteristics(nil, for: service)
             print("service found...")
             print(service.uuid)
             print("end service...")
@@ -146,6 +149,7 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
             if characteristic.properties.contains(.writeWithoutResponse) {
                 print("\(characteristic.uuid): properties contains .writeWithoutResponse")
                 BLEConnection.sharedInstance.txCharacteristic = characteristic
+                
             }
         }
     }
