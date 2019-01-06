@@ -91,8 +91,8 @@ class FSdeviceModelController: NSObject {
         //print("rx data")
         //print(byte.count)
         let byteArray = [UInt8](byte)
-        print("Array...")
-        print(byteArray)
+        //print("Array...")
+        //print(byteArray)
         for byte in byteArray {
             parseByte(byte: byte)
             //print(byte)
@@ -293,9 +293,7 @@ class FSdeviceModelController: NSObject {
     
     
     func saveFile(file: String){
-        var line = "FlightSketch Header v1.0"
-        line = line + "\n"
-        line = line + "Altitude (ft)\n"
+        var line = "time, pressure, altitude, velocity\n"
         
 
         
@@ -311,8 +309,14 @@ class FSdeviceModelController: NSObject {
         do {
             let fileHandle = try FileHandle(forWritingTo: fileURL)
             
-            for i in 0..<fileCounter{
-                line = String(format: "%.1f", downloadFile[i])
+            for i in 0..<fileCounter/4{
+                line = String(format: "%.3f", downloadFile[4*i])
+                line = line + ","
+                line = line + String(format: "%.3f", downloadFile[4*i+1])
+                line = line + ","
+                line = line + String(format: "%.3f", downloadFile[4*i+2])
+                line = line + ","
+                line = line + String(format: "%.3f", downloadFile[4*i+3])
                 line = line + "\n"
                 
                 
@@ -346,17 +350,19 @@ class FSdeviceModelController: NSObject {
                         multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
                     }
                 }
-                var dataString: String = "time,altitude\n"
+                var dataString: String = "time,pressure,altitude,velocity\n"
                 var line: String
-                var time = 0.0
                 
-                for i in 0..<self.fileCounter{
-                    line = String(format: "%.3f", time)
+                for i in 0..<self.fileCounter/4{
+                    line = String(format: "%.3f", self.downloadFile[4*i])
                     line = line + ","
-                    line = line + String(format: "%.1f", self.downloadFile[i])
+                    line = line + String(format: "%.5f", self.downloadFile[4*i+1])
+                    line = line + ","
+                    line = line + String(format: "%.3f", self.downloadFile[4*i+2])
+                    line = line + ","
+                    line = line + String(format: "%.3f", self.downloadFile[4*i+3])
                     line = line + "\n"
                     dataString = dataString + line
-                    time = time + 0.020
                 }
                 
                 let data = dataString.data(using: String.Encoding.utf8, allowLossyConversion: false)!

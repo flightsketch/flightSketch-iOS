@@ -11,7 +11,7 @@ import CoreBluetooth
 
 class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    
+    static var sharedInstance = BLEConnectionModelController()
     private var connection = BLEConnection.sharedInstance
     var deviceCleanupTimer: Timer!
     let service_ID = CBUUID(string: "49535343-fe7d-4ae5-8fa9-9fafd205e455")

@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
     
     
     var menuShowing = false
-    //var connectionController: BLEConnectionModelController = BLEConnectionModelController()
+    var connectionController: BLEConnectionModelController = BLEConnectionModelController()
     var deviceController: FSdeviceModelController = FSdeviceModelController()
     var userController: FSUsersModelController = FSUsersModelController()
     

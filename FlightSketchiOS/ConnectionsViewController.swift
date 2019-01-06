@@ -16,8 +16,8 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var deviceTableCellText: UILabel!
 
 
-    var connectionController: BLEConnectionModelController = BLEConnectionModelController()
-
+    
+    private var connection = BLEConnection.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()
