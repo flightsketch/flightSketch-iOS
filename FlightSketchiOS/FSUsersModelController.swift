@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import SwiftKeychainWrapper
 
 class FSUsersModelController: NSObject {
     
@@ -16,6 +17,19 @@ class FSUsersModelController: NSObject {
     override init(){
         super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(tryLogin(_:)), name: .tryLogin, object: nil)
+    }
+    
+    func getKeychainToken(){
+        
+        let retrievedToken: String? = KeychainWrapper.standard.string(forKey: "FlightSketchToken")
+        
+        if (retrievedToken != nil){
+            print("found token... ")
+            print(retrievedToken!)
+            print("\n")
+            self.user.token = retrievedToken
+            self.user.isLoggedIn = true
+        }
     }
     
     @objc func tryLogin(_ notification: NSNotification) {
@@ -35,9 +49,13 @@ class FSUsersModelController: NSObject {
                     if let result = response.result.value {
                         let JSON = result as! NSDictionary
                         print(JSON)
-                        self.user.token = JSON["token"] as! String
+                        self.user.token = (JSON["token"] as! String)
                         self.user.isLoggedIn = true
                         self.user.userName = username
+                        
+                        let saveSuccessful: Bool = KeychainWrapper.standard.set((JSON["token"] as! String), forKey: "FlightSketchToken")
+                        
+                        print(saveSuccessful)
                     }
                     
                     break

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 
 class MainViewController: UIViewController {
@@ -37,6 +38,10 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         menuTrailingConst.constant = -200
         NotificationCenter.default.addObserver(self, selector: #selector(FSDeviceUpdate(_:)), name: .FSDeviceUpdate, object: nil)
+        
+        userController.getKeychainToken()
+        
+        
         
         // Do any additional setup after loading the view, typically from a nib.
     }
