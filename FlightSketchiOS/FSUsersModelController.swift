@@ -54,7 +54,7 @@ class FSUsersModelController: NSObject {
                         self.user.userName = username
                         
                         let saveSuccessful: Bool = KeychainWrapper.standard.set((JSON["token"] as! String), forKey: "FlightSketchToken")
-                        
+                        NotificationCenter.default.post(name: .FSUserUpdate, object: nil, userInfo: nil)
                         print(saveSuccessful)
                     }
                     
@@ -66,5 +66,43 @@ class FSUsersModelController: NSObject {
             }
             
         }
+    }
+    
+    @objc func tryToken() {
+        print("try token")
+        
+            
+            let urlString = "https://flightsketch.com/api/verify-token/"
+        
+            let authToken = "Token " + self.user.token!
+        
+            let authHeader = [
+                "Authorization": authToken
+            ]
+            print(authHeader)
+            
+            Alamofire.request(urlString, method: .get, headers: authHeader).responseJSON {
+                response in
+                switch response.result {
+                case .success:
+                    if let result = response.result.value {
+                        let JSON = result as! NSDictionary
+                        print(JSON)
+                        self.user.userName = JSON["name"] as? String;
+                        print(self.user.userName!)
+                        NotificationCenter.default.post(name: .FSUserUpdate, object: nil, userInfo: nil)
+                    }
+                    
+                    break
+                case .failure(let error):
+                    self.user.isLoggedIn = false
+                    self.user.userName = ""
+                    self.user.token = ""
+                    
+                    print(error)
+                }
+            }
+            
+        
     }
 }

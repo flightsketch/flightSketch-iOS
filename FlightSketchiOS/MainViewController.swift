@@ -16,6 +16,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var currentAltitudeLabel: UILabel!
     @IBOutlet weak var maxAltitudeLabel: UILabel!
     @IBOutlet weak var sensorTempLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
     
     @IBAction func setZeroAlt(_ sender: Any) {
         print("button")
@@ -38,12 +39,23 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         menuTrailingConst.constant = -200
         NotificationCenter.default.addObserver(self, selector: #selector(FSDeviceUpdate(_:)), name: .FSDeviceUpdate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FSUserUpdate(_:)), name: .FSUserUpdate, object: nil)
         
         userController.getKeychainToken()
+        userController.tryToken()
         
         
         
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    @objc func FSUserUpdate(_ notification: NSNotification) {
+        if (FSUser.sharedInstance.userName == "" || FSUser.sharedInstance.userName == nil){
+            usernameLabel.text = "Not Logged In"
+        }
+        else {
+            usernameLabel.text = "Logged in as " + FSUser.sharedInstance.userName!
+        }
     }
     
     @objc func FSDeviceUpdate(_ notification: NSNotification) {
@@ -69,6 +81,7 @@ class MainViewController: UIViewController {
                 else {
                     sensorTempLabel.text = String(format: "%.1f", Double(data.temp!))
                 }
+                
             }
         }
     }
@@ -99,6 +112,7 @@ extension Notification.Name {
     static let deviceListChanged = Notification.Name("deviceListChanged")
     static let BLEDataRx = Notification.Name("BLEDataRx")
     static let FSDeviceUpdate = Notification.Name("FSDeviceUpdate")
+    static let FSUserUpdate = Notification.Name("FSUserUpdate")
     static let setZeroAlt = Notification.Name("setZeroAlt")
     static let sendBLEPacket = Notification.Name("sendBLEPacket")
     static let recordData = Notification.Name("recordData")
