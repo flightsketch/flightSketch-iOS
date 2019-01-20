@@ -11,6 +11,7 @@ import UIKit
 class AccountViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var userStatusLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -18,8 +19,26 @@ class AccountViewController: UIViewController, UITextFieldDelegate {
         userNameTextField.delegate = self
         passwordTextField.delegate = self
         
+        NotificationCenter.default.addObserver(self, selector: #selector(FSUserUpdate(_:)), name: .FSUserUpdate, object: nil)
+        
+        if (FSUser.sharedInstance.userName == "" || FSUser.sharedInstance.userName == nil){
+            userStatusLabel.text = "Not Logged In"
+        }
+        else {
+            userStatusLabel.text = "Logged in as " + FSUser.sharedInstance.userName!
+        }
+        
 
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func FSUserUpdate(_ notification: NSNotification) {
+        if (FSUser.sharedInstance.userName == "" || FSUser.sharedInstance.userName == nil){
+            userStatusLabel.text = "Not Logged In"
+        }
+        else {
+            userStatusLabel.text = "Logged in as " + FSUser.sharedInstance.userName!
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

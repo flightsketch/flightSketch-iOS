@@ -49,13 +49,15 @@ class FSUsersModelController: NSObject {
                     if let result = response.result.value {
                         let JSON = result as! NSDictionary
                         print(JSON)
-                        self.user.token = (JSON["token"] as! String)
-                        self.user.isLoggedIn = true
-                        self.user.userName = username
-                        
-                        let saveSuccessful: Bool = KeychainWrapper.standard.set((JSON["token"] as! String), forKey: "FlightSketchToken")
-                        NotificationCenter.default.post(name: .FSUserUpdate, object: nil, userInfo: nil)
-                        print(saveSuccessful)
+                        if (JSON["token"] != nil){
+                            self.user.token = (JSON["token"] as! String)
+                            self.user.isLoggedIn = true
+                            self.user.userName = username
+                            
+                            let saveSuccessful: Bool = KeychainWrapper.standard.set((JSON["token"] as! String), forKey: "FlightSketchToken")
+                            NotificationCenter.default.post(name: .FSUserUpdate, object: nil, userInfo: nil)
+                            print(saveSuccessful)
+                        }
                     }
                     
                     break

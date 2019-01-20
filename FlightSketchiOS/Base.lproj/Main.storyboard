@@ -336,12 +336,21 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES" textContentType="password"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logged in as username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uml-QG-Bam">
+                                <rect key="frame" x="50" y="369" width="275" height="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.29368188639999998" green="0.90855731870000001" blue="0.73142714419999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Uml-QG-Bam" firstAttribute="leading" secondItem="n1d-Cv-5Di" secondAttribute="leading" constant="50" id="1C0-jU-JfU"/>
+                            <constraint firstItem="n1d-Cv-5Di" firstAttribute="trailing" secondItem="Uml-QG-Bam" secondAttribute="trailing" constant="50" id="34m-Rl-q63"/>
                             <constraint firstItem="n1d-Cv-5Di" firstAttribute="trailing" secondItem="FXb-zR-nA7" secondAttribute="trailing" constant="50" id="FAa-T8-XLP"/>
                             <constraint firstItem="Fmt-oI-Kp8" firstAttribute="leading" secondItem="OJD-Ga-tMw" secondAttribute="trailing" constant="10" id="HDG-RU-lwS"/>
                             <constraint firstItem="5za-Hl-5yf" firstAttribute="top" secondItem="n1d-Cv-5Di" secondAttribute="top" constant="35" id="QX8-db-i0Z"/>
+                            <constraint firstItem="Uml-QG-Bam" firstAttribute="top" secondItem="OJD-Ga-tMw" secondAttribute="bottom" constant="30" id="T2S-hQ-vRr"/>
                             <constraint firstItem="Fmt-oI-Kp8" firstAttribute="top" secondItem="FXb-zR-nA7" secondAttribute="bottom" constant="50" id="Tx8-gP-3ix"/>
                             <constraint firstItem="cVk-Vw-f1M" firstAttribute="top" secondItem="5za-Hl-5yf" secondAttribute="bottom" constant="50" id="WVn-oJ-su1"/>
                             <constraint firstItem="OJD-Ga-tMw" firstAttribute="top" secondItem="cVk-Vw-f1M" secondAttribute="bottom" constant="50" id="Y9r-b9-o3J"/>
@@ -359,6 +368,7 @@
                     <connections>
                         <outlet property="passwordTextField" destination="Fmt-oI-Kp8" id="aua-oH-NNb"/>
                         <outlet property="userNameTextField" destination="FXb-zR-nA7" id="PF3-Q7-Vpx"/>
+                        <outlet property="userStatusLabel" destination="Uml-QG-Bam" id="Xha-r6-DEQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EjH-eB-nWb" userLabel="First Responder" sceneMemberID="firstResponder"/>
