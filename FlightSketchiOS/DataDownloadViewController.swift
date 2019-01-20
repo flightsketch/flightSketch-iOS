@@ -38,10 +38,46 @@ class DataDownloadViewController: UIViewController {
         NotificationCenter.default.post(name: .uploadFile, object: nil, userInfo: dataDict)
     }
     
+    @objc func updateFileStatus(_ notification: NSNotification) {
+        //print(notification.userInfo ?? "")
+        if let dict = notification.userInfo as NSDictionary? {
+            if let data = dict["status"] as? String{
+                switch (data){
+                case "saveComplete": do {
+                    let alertController = UIAlertController(title: "Save Locally", message: "Complete!", preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    alertController.addAction(defaultAction)
+                    present(alertController, animated: true, completion: nil)
+                    }
+                case "saveFailed": do {
+                    let alertController = UIAlertController(title: "Save Locally", message: "File did not save, error!", preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    alertController.addAction(defaultAction)
+                    present(alertController, animated: true, completion: nil)
+                    }
+                case "uploadComplete": do {
+                    let alertController = UIAlertController(title: "Upload Data", message: "Complete!", preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    alertController.addAction(defaultAction)
+                    present(alertController, animated: true, completion: nil)
+                    }
+                case "uploadFailed": do {
+                    let alertController = UIAlertController(title: "Upload Data", message: "File did not upload, check login!", preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    alertController.addAction(defaultAction)
+                    present(alertController, animated: true, completion: nil)
+                    }
+                default: saveLocallyButton.titleLabel?.text = "Unknown"
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateProgress(_:)), name: .fileDownloadProgressUpdate, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(downloadComplete(_:)), name: .fileDownloadComplete, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateFileStatus(_:)), name: .fileStatus, object: nil)
         headerLabel.text = "Downloading Data..."
         fileNameTextField.isHidden = true
         fileNameLabel.isHidden = true

@@ -326,8 +326,12 @@ class FSdeviceModelController: NSObject {
                 
             }
             fileHandle.closeFile()
+            let dataDict:[String: String] = ["status": "saveComplete"]
+            NotificationCenter.default.post(name: .fileStatus, object: nil, userInfo: dataDict)
         } catch {
             print("error...")
+            let dataDict:[String: String] = ["status": "saveFailed"]
+            NotificationCenter.default.post(name: .fileStatus, object: nil, userInfo: dataDict)
         }
     }
     
@@ -379,10 +383,14 @@ class FSdeviceModelController: NSObject {
                 case .success(let upload, _, _):
                     upload.responseJSON { response in
                         debugPrint(response)
+                        let dataDict:[String: String] = ["status": "uploadComplete"]
+                        NotificationCenter.default.post(name: .fileStatus, object: nil, userInfo: dataDict)
                         
                     }
                 case .failure(let encodingError):
                     print("encoding Error : \(encodingError)")
+                    let dataDict:[String: String] = ["status": "uploadFailed"]
+                    NotificationCenter.default.post(name: .fileStatus, object: nil, userInfo: dataDict)
                 }
         })
     }
