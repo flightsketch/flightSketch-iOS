@@ -234,8 +234,7 @@ class FSdeviceModelController: NSObject {
         for i in 0..<2 {
             batt = batt + Int(dataArray[i]) << (8*i)
         }
-        
-        FSDevice.battVoltage = (3.0*3.3*Double(batt)/4096.0)
+        FSDevice.battVoltage = (Double(batt)/1000.0)
         //battVbt.text = String(format: "%.2f", battV)
         
     }

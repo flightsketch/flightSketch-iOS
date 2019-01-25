@@ -54,7 +54,12 @@ class ConnectionsViewController: UIViewController, UITableViewDelegate, UITableV
             text = "RSSI:  "
             text = text + BLEConnection.sharedInstance.deviceList[indexPath.row].RSSI.stringValue
             cell.RSSILabel.text = text
-            cell.ConnectedLabel.isHidden = !BLEConnection.sharedInstance.isConnected
+            if (BLEConnection.sharedInstance.deviceList[indexPath.row].peripheral == BLEConnection.sharedInstance.connectedDevice){
+                cell.ConnectedLabel.isHidden = false
+            }
+            else {
+                cell.ConnectedLabel.isHidden = true
+            }
         }
         else {
             text = "no name"

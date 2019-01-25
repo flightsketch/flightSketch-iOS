@@ -160,6 +160,13 @@
                                             <constraint firstAttribute="height" constant="275" id="qRC-Zf-shQ"/>
                                         </constraints>
                                     </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DCM-nw-eOw">
+                                        <rect key="frame" x="283" y="177" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Logged in as username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPb-XB-LTu">
                                         <rect key="frame" x="50" y="109" width="275" height="21.666666666666657"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -267,6 +274,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="battVLabel" destination="DCM-nw-eOw" id="Zh9-Z0-6OE"/>
                         <outlet property="currentAltitudeLabel" destination="QYE-Hv-SAt" id="wl3-kr-BnO"/>
                         <outlet property="maxAltitudeLabel" destination="xHs-pt-5g4" id="9MA-yK-4yI"/>
                         <outlet property="menuTrailingConst" destination="1yd-hG-NYw" id="ehX-fh-kvU"/>

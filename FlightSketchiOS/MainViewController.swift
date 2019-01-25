@@ -17,6 +17,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var maxAltitudeLabel: UILabel!
     @IBOutlet weak var sensorTempLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var battVLabel: UILabel!
     
     @IBAction func setZeroAlt(_ sender: Any) {
         print("button")
@@ -80,6 +81,12 @@ class MainViewController: UIViewController {
                 }
                 else {
                     sensorTempLabel.text = String(format: "%.1f", Double(data.temp!))
+                }
+                if (data.battVoltage == nil){
+                    sensorTempLabel.text = "-----.-"
+                }
+                else {
+                    battVLabel.text = String(format: "%.2f", Double(data.battVoltage!))
                 }
                 
             }
