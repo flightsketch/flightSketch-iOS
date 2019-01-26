@@ -14,6 +14,8 @@ class FSDeviceModel: NSObject {
     var maxAltitude: Double?
     var temp: Double?
     var battVoltage: Double?
+    var isRecording: Bool = false
+    var isArmedForLaunch: Bool = false
     
     override init(){
         super.init()

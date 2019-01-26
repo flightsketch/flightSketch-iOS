@@ -288,6 +288,23 @@ class FSdeviceModelController: NSObject {
     func parsePacket_type6() {
         print("packet6")
         print(dataArray)
+        let recordingMask: UInt8 = 0b00000010
+        let armedForLaunchMask: UInt8 = 0b00000001
+        if ((dataArray[0] & recordingMask) == recordingMask){
+            FSDevice.isRecording = true
+        }
+        else {
+            FSDevice.isRecording = false
+        }
+        if ((dataArray[0] & armedForLaunchMask) == armedForLaunchMask){
+            FSDevice.isArmedForLaunch = true
+        }
+        else {
+            FSDevice.isArmedForLaunch = false
+        }
+        
+        let dataDict:[String: FSDeviceModel] = ["data": FSDevice]
+        NotificationCenter.default.post(name: .FSDeviceUpdate, object: nil, userInfo: dataDict)
     }
     
     

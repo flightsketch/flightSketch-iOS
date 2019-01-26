@@ -18,6 +18,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var sensorTempLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var battVLabel: UILabel!
+    @IBOutlet weak var RSSILabel: UILabel!
+    @IBOutlet weak var recordBt: UIButton!
+    @IBOutlet weak var armForLaunchBt: UIButton!
     
     @IBAction func setZeroAlt(_ sender: Any) {
         print("button")
@@ -87,6 +90,28 @@ class MainViewController: UIViewController {
                 }
                 else {
                     battVLabel.text = String(format: "%.2f", Double(data.battVoltage!))
+                }
+                if (BLEConnection.sharedInstance.connectedDevice == nil){
+                    RSSILabel.text = "---"
+                }
+                else {
+                    RSSILabel.text = BLEConnection.sharedInstance.deviceList[(BLEConnection.sharedInstance.controller?.deviceIndex())!].RSSI.stringValue
+                }
+                if (data.isRecording) {
+                    recordBt.setTitle( "Recording" , for: .normal )
+                    recordBt.titleLabel?.textColor = UIColor.green
+                }
+                else {
+                    recordBt.setTitle( "Start Recording" , for: .normal )
+                    recordBt.titleLabel?.textColor = UIColor.white
+                }
+                if (data.isArmedForLaunch) {
+                    armForLaunchBt.setTitle( "Ready To Launch" , for: .normal )
+                    armForLaunchBt.titleLabel?.textColor = UIColor.green
+                }
+                else {
+                    armForLaunchBt.setTitle( "Arm For Launch" , for: .normal )
+                    armForLaunchBt.titleLabel?.textColor = UIColor.white
                 }
                 
             }

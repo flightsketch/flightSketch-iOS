@@ -115,10 +115,24 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
         BLEConnection.sharedInstance.isConnected = false
     }
     
+    func deviceIndex() -> Int{
+        var index: Int = 0
+        var indexOut: Int = 0
+        index = 0
+        for device in BLEConnection.sharedInstance.deviceList {
+            if (device.peripheral == BLEConnection.sharedInstance.connectedDevice){
+                indexOut = index
+            }
+            index = index + 1
+        }
+        return indexOut
+    }
+    
     
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         //print(RSSI)
         //lbRSSI.text = RSSI.stringValue
+        BLEConnection.sharedInstance.deviceList[self.deviceIndex()].RSSI = RSSI
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -165,6 +179,7 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
     }
     
     private func readData(from characteristic: CBCharacteristic) {
+        BLEConnection.sharedInstance.connectedDevice?.readRSSI()
         //altPeripheral.readRSSI()
         //parseData(byte: characteristic.value!)
         //print(characteristic.value)
