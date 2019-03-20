@@ -55,6 +55,7 @@ class FSdeviceModelController: NSObject {
     
     @objc func setZeroAlt(_ notification: NSNotification) {
         print("device rx signal")
+        
         let packet: [UInt8] = [0xf5, 0xf1, 0x00, 0xE6]
         let dataDict:[String: [UInt8]] = ["data": packet]
         NotificationCenter.default.post(name: .sendBLEPacket, object: nil, userInfo: dataDict)

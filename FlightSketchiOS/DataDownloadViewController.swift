@@ -78,7 +78,8 @@ class DataDownloadViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(updateProgress(_:)), name: .fileDownloadProgressUpdate, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(downloadComplete(_:)), name: .fileDownloadComplete, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateFileStatus(_:)), name: .fileStatus, object: nil)
-        headerLabel.text = "Downloading Data..."
+        headerLabel.text = "Not Connected..."
+        progressBar.progress = 0.0
         fileNameTextField.isHidden = true
         fileNameLabel.isHidden = true
         saveLocallyButton.isHidden = true
@@ -97,6 +98,7 @@ class DataDownloadViewController: UIViewController {
             if let data = dict["progress"] as? Double{
                 //print("2")
                 progressBar.progress = Float(data)
+                headerLabel.text = "Downloading Data..."
             }
         }
     }

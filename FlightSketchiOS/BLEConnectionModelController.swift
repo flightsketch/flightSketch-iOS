@@ -34,7 +34,12 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
             if let data = dict["data"] as? [UInt8]{
                 print("2")
                 //print("dataRx:" + data.base64EncodedString())
+                if (connection.connectedDevice != nil){
                 connection.connectedDevice!.writeValue(Data(bytes: data), for: connection.txCharacteristic!, type:CBCharacteristicWriteType.withoutResponse)
+                }
+                else{
+                    
+                }
             }
         }
     }
