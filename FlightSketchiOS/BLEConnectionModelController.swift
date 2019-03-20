@@ -118,6 +118,7 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
         print("disconnect")
         BLEConnection.sharedInstance.connectedDevice = nil
         BLEConnection.sharedInstance.isConnected = false
+        NotificationCenter.default.post(name: .deviceDisconnected, object: self)
     }
     
     func deviceIndex() -> Int{

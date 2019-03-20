@@ -128,8 +128,20 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="WTk-On-0mY" userLabel="Controls Stack">
                                         <rect key="frame" x="50" y="378.66666666666674" width="275" height="275"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6W-Mr-Gj2">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOR-2Y-ZtA">
                                                 <rect key="frame" x="0.0" y="0.0" width="275" height="85"/>
+                                                <color key="backgroundColor" red="0.20470538790000001" green="0.51259383709999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                <state key="normal" title="Connect to Device">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="openConnections:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gAH-3L-pTP"/>
+                                                    <segue destination="Wmr-mr-ebw" kind="show" id="PG3-1r-S6k"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6W-Mr-Gj2">
+                                                <rect key="frame" x="0.0" y="94.999999999999943" width="275" height="85"/>
                                                 <color key="backgroundColor" red="0.20470538790000001" green="0.51259383709999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                                 <state key="normal" title="Arm For Launch">
@@ -137,17 +149,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="setZeroAlt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2UK-l9-33u"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOR-2Y-ZtA">
-                                                <rect key="frame" x="0.0" y="94.999999999999943" width="275" height="85"/>
-                                                <color key="backgroundColor" red="0.20470538790000001" green="0.51259383709999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                                <state key="normal" title="Start Recording">
-                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="startRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="l27-J9-fRe"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u19-Wz-yNs">
@@ -325,7 +326,7 @@
                         <outlet property="currentAltitudeLabel" destination="QYE-Hv-SAt" id="wl3-kr-BnO"/>
                         <outlet property="maxAltitudeLabel" destination="xHs-pt-5g4" id="9MA-yK-4yI"/>
                         <outlet property="menuTrailingConst" destination="1yd-hG-NYw" id="ehX-fh-kvU"/>
-                        <outlet property="recordBt" destination="HOR-2Y-ZtA" id="8dV-vt-vze"/>
+                        <outlet property="openConnectionsBt" destination="HOR-2Y-ZtA" id="p48-Cv-y9o"/>
                         <outlet property="sensorTempLabel" destination="blz-hc-4os" id="Hht-Ca-VUJ"/>
                         <outlet property="usernameLabel" destination="QPb-XB-LTu" id="9Kf-lf-dbc"/>
                     </connections>
@@ -718,4 +719,7 @@
             <point key="canvasLocation" x="145" y="126"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="qvu-xr-iOK"/>
+    </inferredMetricsTieBreakers>
 </document>

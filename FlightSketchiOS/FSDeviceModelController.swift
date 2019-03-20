@@ -75,6 +75,19 @@ class FSdeviceModelController: NSObject {
         NotificationCenter.default.post(name: .sendBLEPacket, object: nil, userInfo: dataDict)
     }
     
+    @objc func deviceDisconnected(_ notification: NSNotification) {
+        print("device disconnected signal")
+        FSDevice.currentAltitude = nil
+        FSDevice.battVoltage = nil
+        FSDevice.maxAltitude = nil
+        FSDevice.temp = nil
+        FSDevice.isArmedForLaunch = false
+        FSDevice.isRecording = false
+        
+        let dataDict:[String: FSDeviceModel] = ["data": FSDevice]
+        NotificationCenter.default.post(name: .FSDeviceUpdate, object: nil, userInfo: dataDict)
+    }
+    
     
     override init(){
         print("sub")
@@ -85,6 +98,7 @@ class FSdeviceModelController: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(downloadData(_:)), name: .downloadData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(saveFileLocally(_:)), name: .saveFileLocally, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(uploadFile(_:)), name: .uploadFile, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceDisconnected(_:)), name: .deviceDisconnected, object: nil)
     }
     
     

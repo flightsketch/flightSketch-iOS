@@ -21,6 +21,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var RSSILabel: UILabel!
     @IBOutlet weak var recordBt: UIButton!
     @IBOutlet weak var armForLaunchBt: UIButton!
+    @IBOutlet weak var openConnectionsBt: UIButton!
     
     @IBAction func setZeroAlt(_ sender: Any) {
         print("button")
@@ -31,6 +32,9 @@ class MainViewController: UIViewController {
     }
     @IBAction func downloadData(_ sender: Any) {
         NotificationCenter.default.post(name: .downloadData, object: self)
+    }
+    @IBAction func openConnections(_ sender: UIButton) {
+        
     }
     
     
@@ -86,7 +90,7 @@ class MainViewController: UIViewController {
                     sensorTempLabel.text = String(format: "%.1f", Double(data.temp!))
                 }
                 if (data.battVoltage == nil){
-                    sensorTempLabel.text = "-----.-"
+                    battVLabel.text = "-----.-"
                 }
                 else {
                     battVLabel.text = String(format: "%.2f", Double(data.battVoltage!))
@@ -97,13 +101,21 @@ class MainViewController: UIViewController {
                 else {
                     RSSILabel.text = BLEConnection.sharedInstance.deviceList[(BLEConnection.sharedInstance.controller?.deviceIndex())!].RSSI.stringValue
                 }
-                if (data.isRecording) {
-                    recordBt.setTitle( "Recording" , for: .normal )
-                    recordBt.titleLabel?.textColor = UIColor.green
+                //if (data.isRecording) {
+                //    recordBt.setTitle( "Recording" , for: .normal )
+                //    recordBt.titleLabel?.textColor = UIColor.green
+                //}
+                //else {
+                //    recordBt.setTitle( "Start Recording" , for: .normal )
+                //    recordBt.titleLabel?.textColor = UIColor.white
+                //}
+                if (BLEConnection.sharedInstance.connectedDevice == nil){
+                    openConnectionsBt.setTitle( "Connect to Device" , for: .normal )
                 }
                 else {
-                    recordBt.setTitle( "Start Recording" , for: .normal )
-                    recordBt.titleLabel?.textColor = UIColor.white
+                openConnectionsBt.setTitle( BLEConnection.sharedInstance.connectedDevice?.name , for: .normal )
+                    openConnectionsBt.titleLabel?.adjustsFontSizeToFitWidth = true
+                    openConnectionsBt.titleLabel?.textColor = UIColor.green
                 }
                 if (data.isArmedForLaunch) {
                     armForLaunchBt.setTitle( "Ready To Launch" , for: .normal )
@@ -155,5 +167,6 @@ extension Notification.Name {
     static let uploadFile = Notification.Name("uploadFile")
     static let fileStatus = Notification.Name("fileStatus")
     static let tryLogin = Notification.Name("tryLogin")
+    static let deviceDisconnected = Notification.Name("deviceDisconnected")
 }
 
