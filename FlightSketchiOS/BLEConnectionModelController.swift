@@ -98,6 +98,11 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
             
             NotificationCenter.default.post(name: .deviceListChanged, object: self)
             //print(connection.deviceList)
+            if (BLEConnection.sharedInstance.lastKnownDevice != nil){
+                if (BLEConnection.sharedInstance.lastKnownDevice!.name == peripheral.name){
+                    BLEConnection.sharedInstance.centralManager.connect(peripheral, options: nil)
+                }
+            }
         }
     }
     
@@ -106,6 +111,7 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
         print("connect")
         print(connection.deviceList)
         BLEConnection.sharedInstance.connectedDevice = peripheral
+        BLEConnection.sharedInstance.lastKnownDevice = peripheral
         peripheral.delegate = self
         BLEConnection.sharedInstance.isConnected = true
         //peripheral.discoverServices([service_ID])

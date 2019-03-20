@@ -17,6 +17,8 @@ class BLEConnection : NSObject{
     var deviceList = [(peripheral: CBPeripheral,  lastUpdate: Date?, RSSI: NSNumber)]()
     var isConnected: Bool = false
     var connectedDevice:CBPeripheral?
+    var lastKnownDevice:CBPeripheral?
+
     var controller: BLEConnectionModelController?
     var txCharacteristic: CBCharacteristic?
     
