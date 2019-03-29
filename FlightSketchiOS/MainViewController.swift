@@ -8,9 +8,10 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import CoreLocation
 
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var menuTrailingConst: NSLayoutConstraint!
     @IBOutlet weak var currentAltitudeLabel: UILabel!
@@ -22,6 +23,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var recordBt: UIButton!
     @IBOutlet weak var armForLaunchBt: UIButton!
     @IBOutlet weak var openConnectionsBt: UIButton!
+    
+    let locationManager = CLLocationManager()
     
     @IBAction func setZeroAlt(_ sender: Any) {
         print("button")
@@ -52,9 +55,23 @@ class MainViewController: UIViewController {
         userController.getKeychainToken()
         userController.tryToken()
         
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+        
         
         
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        deviceController.FSDevice.location = locValue
     }
     
     @objc func FSUserUpdate(_ notification: NSNotification) {
@@ -168,5 +185,6 @@ extension Notification.Name {
     static let fileStatus = Notification.Name("fileStatus")
     static let tryLogin = Notification.Name("tryLogin")
     static let deviceDisconnected = Notification.Name("deviceDisconnected")
+    static let getWeather = Notification.Name("getWeather")
 }
 

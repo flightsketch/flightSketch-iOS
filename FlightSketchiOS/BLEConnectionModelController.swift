@@ -85,6 +85,9 @@ class BLEConnectionModelController: NSObject, CBCentralManagerDelegate, CBPeriph
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
+        
+        
+        
         if let i = connection.deviceList.index(where: ({ $0.peripheral === peripheral })) {
             connection.deviceList[i].RSSI = RSSI
             connection.deviceList[i].lastUpdate = Date()

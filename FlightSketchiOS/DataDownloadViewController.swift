@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class DataDownloadViewController: UIViewController {
 
@@ -20,6 +21,8 @@ class DataDownloadViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var descriptionTextField: UITextView!
+    @IBOutlet weak var weatherSwitch: UISwitch!
+    @IBOutlet weak var weatherSwitchView: UIStackView!
     
     @IBAction func fileNameTextFieldPrimaryAction(_ sender: Any) {
         self.view.endEditing(true)
@@ -34,7 +37,7 @@ class DataDownloadViewController: UIViewController {
         NotificationCenter.default.post(name: .saveFileLocally, object: nil, userInfo: dataDict)
     }
     @IBAction func uploadToWeb(_ sender: Any) {
-        let dataDict:[String: String] = ["fileName": fileNameTextField.text!, "title": titleTextField.text!, "description": descriptionTextField.text]
+        let dataDict:[String: Any] = ["fileName": fileNameTextField.text!, "title": titleTextField.text!, "description": descriptionTextField.text, "useWeather": weatherSwitch?.isOn ?? true]
         NotificationCenter.default.post(name: .uploadFile, object: nil, userInfo: dataDict)
     }
     
@@ -88,6 +91,12 @@ class DataDownloadViewController: UIViewController {
         titleTextField.isHidden = true
         descriptionLabel.isHidden = true
         descriptionTextField.isHidden = true
+        weatherSwitchView.isHidden = true
+        
+        NotificationCenter.default.post(name: .getWeather, object: nil, userInfo: nil)
+        
+        
+        
         
     }
     
@@ -116,7 +125,7 @@ class DataDownloadViewController: UIViewController {
         let file = "FltSk__" + dateString + ".csv"
         
         fileNameTextField.text = file
-        titleTextField.text = file
+        titleTextField.text = ""
         descriptionTextField.text = ""
         fileNameLabel.isHidden = false
         headerLabel.text = "Download Complete"
@@ -127,6 +136,7 @@ class DataDownloadViewController: UIViewController {
         titleTextField.isHidden = false
         descriptionLabel.isHidden = false
         descriptionTextField.isHidden = false
+        weatherSwitchView.isHidden = false
     }
     
     

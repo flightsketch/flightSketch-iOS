@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class FSDeviceModel: NSObject {
     
@@ -17,8 +18,25 @@ class FSDeviceModel: NSObject {
     var isRecording: Bool = false
     var isArmedForLaunch: Bool = false
     
+    var avgWind: Double?
+    var windGust: Double?
+    var windDir: Double?
+    var currentTemp: Double?
+    var cloudCover: Double?
+    var humidity: Double?
+    
+    var apogee: Double?
+    var maxSpeed: Double?
+    var avgDescentRate: Double?
+    var timeToBurnout: Double?
+    var timeToApogee: Double?
+    var totalTime: Double?
+    
+    var location: CLLocationCoordinate2D?
+    
     override init(){
         super.init()
+        
     }
 
 }

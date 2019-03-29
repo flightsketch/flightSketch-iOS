@@ -49,7 +49,7 @@ class FSdeviceModelController: NSObject {
         //print(notification.userInfo ?? "")
         if let dict = notification.userInfo as NSDictionary? {
             let data = dict["fileName"]
-            uploadFile(file: dict["fileName"] as! String, title: dict["title"] as! String, description: dict["description"] as! String)
+            uploadFile(file: dict["fileName"] as! String, title: dict["title"] as! String, description: dict["description"] as! String, useWeather: dict["useWeather"] as! Bool)
         }
     }
     
@@ -75,6 +75,49 @@ class FSdeviceModelController: NSObject {
         NotificationCenter.default.post(name: .sendBLEPacket, object: nil, userInfo: dataDict)
     }
     
+    @objc func getWeather(_ notification: NSNotification) {
+        print("get weather in fsdevice")
+        let urlString = "https://flightsketch.com/weather/"
+        
+        let parameters: Parameters = ["lat" : self.FSDevice.location?.latitude as Any, "lon" : self.FSDevice.location?.longitude as Any]
+        
+        Alamofire.request(urlString, method: .get, parameters: parameters,encoding: URLEncoding.default, headers: nil).responseJSON {
+            response in
+            switch response.result {
+            case .success:
+                print(response)
+                if let result = response.result.value {
+                    let JSON = result as! NSDictionary
+                    print(JSON)
+                    if (JSON["avg_wind"] != nil){
+                        self.FSDevice.avgWind = (JSON["avg_wind"] as! Double)
+                    }
+                    if (JSON["wind_dir"] != nil){
+                        self.FSDevice.windDir = (JSON["wind_dir"] as! Double)
+                    }
+                    if (JSON["wind_gust"] != nil){
+                        self.FSDevice.windGust = (JSON["wind_gust"] as! Double)
+                    }
+                    if (JSON["temp"] != nil){
+                        self.FSDevice.currentTemp = (JSON["temp"] as! Double)
+                    }
+                    if (JSON["humidity"] != nil){
+                        self.FSDevice.humidity = (JSON["humidity"] as! Double)
+                    }
+                    if (JSON["cloud_cover"] != nil){
+                        self.FSDevice.cloudCover = (JSON["cloud_cover"] as! Double)
+                    }
+                }
+                
+                break
+            case .failure(let error):
+                print(response)
+                print(error)
+            }
+        }
+        
+    }
+    
     @objc func deviceDisconnected(_ notification: NSNotification) {
         print("device disconnected signal")
         FSDevice.currentAltitude = nil
@@ -96,6 +139,7 @@ class FSdeviceModelController: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(setZeroAlt(_:)), name: .setZeroAlt, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(recordData(_:)), name: .recordData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(downloadData(_:)), name: .downloadData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getWeather(_:)), name: .getWeather, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(saveFileLocally(_:)), name: .saveFileLocally, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(uploadFile(_:)), name: .uploadFile, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deviceDisconnected(_:)), name: .deviceDisconnected, object: nil)
@@ -297,6 +341,150 @@ class FSdeviceModelController: NSObject {
         NotificationCenter.default.post(name: .fileDownloadProgressUpdate, object: nil, userInfo: dataDict)
         
         NotificationCenter.default.post(name: .fileDownloadComplete, object: self)
+        if (fileCounter > 16){
+            processDataFile()
+        }
+    }
+    
+    func processDataFile() {
+        
+        let npts = downloadFile.count/4
+        var time: Double = 0
+        var press: Double = 0
+        var alt: Double = 0
+        var spd: Double = 0
+        var apogee: Double = -999.999
+        var launch: Bool = false
+        var burnout: Bool = false
+        
+        var rawAlt: Double = 0
+        
+        var y: [Double] = Array(repeating: 0, count: npts)
+        var x: [Double] = Array(repeating: 0, count: npts)
+        
+        var x2: [Double] = Array(repeating: 0, count: npts)
+        var x3: [Double] = Array(repeating: 0, count: npts)
+        var x4: [Double] = Array(repeating: 0, count: npts)
+        
+        var yx: [Double] = Array(repeating: 0, count: npts)
+        var yx2: [Double] = Array(repeating: 0, count: npts)
+        
+        var sumX: Double = 0.0
+        var sumY: Double = 0.0
+        
+        var sumX2: Double = 0.0
+        var sumX3: Double = 0.0
+        var sumX4: Double = 0.0
+        
+        var sumYX: Double = 0.0
+        var sumYX2: Double = 0.0
+        
+        var C1: Double = 0.0
+        var C2: Double = 0.0
+        
+        var factor: Double = 0.0
+        var accel: Double = 0.0
+        
+        var dim: Int = 10
+        var n: Double = 21.0
+        
+        var timeOffset: Double = 0.0
+        
+        
+        
+        for i in 0..<npts {
+            time = downloadFile[4*i+0]
+            press = downloadFile[4*i+1]
+            alt = downloadFile[4*i+2]
+            spd = downloadFile[4*i+3]
+            
+            rawAlt = press/101.325
+            rawAlt = pow(rawAlt,0.190284)
+            rawAlt = 1.0 - rawAlt
+            rawAlt = rawAlt * 145366.45
+            
+            x[i] = time
+            y[i] = rawAlt
+            
+            x2[i] = pow(time,2.0)
+            x3[i] = pow(time,3.0)
+            x4[i] = pow(time,4.0)
+            
+            yx[i] = time*rawAlt
+            yx2[i] = x2[i]*rawAlt
+            
+            if (spd > 30.0 && alt > 15.0){
+                launch = true
+            }
+            
+            if (alt > apogee){
+                apogee = alt
+                FSDevice.apogee = alt
+                FSDevice.timeToApogee = time
+            }
+        }
+        
+        launch = false
+        FSDevice.maxSpeed = -999.999
+        
+        for i in 0..<npts {
+            if (i<11 || i>(npts-51)){
+                downloadFile[4*i+3] = 0
+            }
+            else {
+                sumX = x[i-dim...i+dim].reduce(0.0, +)
+                sumY = y[i-dim...i+dim].reduce(0.0, +)
+                
+                sumX2 = x2[i-dim...i+dim].reduce(0.0, +)
+                sumX3 = x3[i-dim...i+dim].reduce(0.0, +)
+                sumX4 = x4[i-dim...i+dim].reduce(0.0, +)
+                
+                sumYX = yx[i-dim...i+dim].reduce(0.0, +)
+                sumYX2 = yx2[i-dim...i+dim].reduce(0.0, +)
+                
+                factor = 1/(-pow(sumX2,3)+sumX4*n*sumX2+2.0*sumX3*sumX*sumX2-sumX4*pow(sumX,2)-pow(sumX3,2)*n)
+                C1 = factor*(sumYX*(sumX2*sumX-sumX3*n)+sumY*(sumX3*sumX-pow(sumX2,2))+sumYX2*(sumX2*n-pow(sumX,2)))
+                C2 = factor*(sumYX*(sumX4*n-pow(sumX2,2))+sumY*(sumX2*sumX3-sumX4*sumX)+sumYX2*(sumX2*sumX-sumX3*n))
+                
+                spd = 2*C1*x[i] + C2
+                accel = 2*C1
+                
+                downloadFile[4*i+3] = spd
+                
+                if (spd > 30.0 && !launch){
+                    launch = true
+                    timeOffset = x[i] - 0.100
+                }
+                
+                
+                
+                if (spd > FSDevice.maxSpeed!){
+                    FSDevice.maxSpeed = spd
+                }
+                
+                if (!burnout && launch && accel < -32.2){
+                    FSDevice.timeToBurnout = x[i]
+                    burnout = true
+                }
+            }
+            if (burnout && dim<50){
+                dim = dim + 1
+                n = n+2.0
+            }
+        }
+        
+        for i in 0..<npts {
+            downloadFile[4*i+0] = downloadFile[4*i+0] - timeOffset
+        }
+        
+        FSDevice.totalTime = time - timeOffset
+        FSDevice.timeToBurnout = FSDevice.timeToBurnout! - timeOffset
+        FSDevice.timeToApogee = FSDevice.timeToApogee! - timeOffset
+        FSDevice.avgDescentRate = apogee/(FSDevice.totalTime! - FSDevice.timeToApogee!)
+        
+        
+        
+        
     }
     
     
@@ -367,16 +555,40 @@ class FSdeviceModelController: NSObject {
     }
     
     
-    func uploadFile(file: String, title: String, description: String){
-        let REST_UPLOAD_API_URL = "https://flightsketch.com/api/flights/"
+    func uploadFile(file: String, title: String, description: String, useWeather: Bool){
+        let REST_UPLOAD_API_URL = "https://flightsketch.com/api/rocketflights/"
         let authToken = "Token " + FSUser.sharedInstance.token!
         
         let headers = [
             "Authorization": authToken
         ]
         
-        let parameters: Parameters = ["title": title,
-                                      "description": description]
+        var parameters: Parameters = ["title": title,
+                                      "description": description,
+                                      "apogee": String(format:"%.3f", self.FSDevice.apogee ?? 0.0),
+                                      "max_vertical_velocity": String(format:"%.3f", self.FSDevice.maxSpeed ?? 0.0),
+                                      "avg_descent_rate": String(format:"%.3f", self.FSDevice.avgDescentRate ?? 0.0),
+                                      "time_to_burnout": String(format:"%.3f", self.FSDevice.timeToBurnout ?? 0.0),
+                                      "time_to_apogee": String(format:"%.3f", self.FSDevice.timeToApogee ?? 0.0),
+                                      "time_to_landing": String(format:"%.3f", self.FSDevice.totalTime ?? 0.0)]
+        
+        if (useWeather){
+            print("using weather")
+            parameters = ["title": title,
+                          "description": description,
+                          "avg_wind": String(format:"%.3f", self.FSDevice.avgWind ?? 0.0),
+                          "wind_gust": String(format:"%.3f", self.FSDevice.windGust ?? 0.0),
+                          "wind_dir": String(format:"%.3f", self.FSDevice.windDir ?? 0.0),
+                          "temp": String(format:"%.3f", self.FSDevice.currentTemp ?? 0.0),
+                          "humidity": String(format:"%.3f", self.FSDevice.humidity ?? 0.0),
+                          "cloud_cover": String(format:"%.3f", self.FSDevice.cloudCover ?? 0.0),
+                          "apogee": String(format:"%.3f", self.FSDevice.apogee ?? 0.0),
+                          "max_vertical_velocity": String(format:"%.3f", self.FSDevice.maxSpeed ?? 0.0),
+                          "avg_descent_rate": String(format:"%.3f", self.FSDevice.avgDescentRate ?? 0.0),
+                          "time_to_burnout": String(format:"%.3f", self.FSDevice.timeToBurnout ?? 0.0),
+                          "time_to_apogee": String(format:"%.3f", self.FSDevice.timeToApogee ?? 0.0),
+                          "time_to_landing": String(format:"%.3f", self.FSDevice.totalTime ?? 0.0)]
+        }
         
         Alamofire.upload(
             multipartFormData: { multipartFormData in
