@@ -390,6 +390,8 @@ class FSdeviceModelController: NSObject {
         
         var timeOffset: Double = 0.0
         
+        var accel_hist: [Double] = Array(repeating: 0, count: npts)
+        
         
         
         for i in 0..<npts {
@@ -448,6 +450,7 @@ class FSdeviceModelController: NSObject {
                 
                 spd = 2*C1*x[i] + C2
                 accel = 2*C1
+                accel_hist[i] = accel
                 
                 downloadFile[4*i+3] = spd
                 
@@ -462,8 +465,8 @@ class FSdeviceModelController: NSObject {
                     FSDevice.maxSpeed = spd
                 }
                 
-                if (!burnout && launch && accel < -32.2){
-                    FSDevice.timeToBurnout = x[i]
+                if (!burnout && launch && (accel < -32.2) && (accel_hist[i-10] < -32.2)){
+                    FSDevice.timeToBurnout = x[i] - 0.200
                     burnout = true
                 }
             }
@@ -481,10 +484,6 @@ class FSdeviceModelController: NSObject {
         FSDevice.timeToBurnout = FSDevice.timeToBurnout! - timeOffset
         FSDevice.timeToApogee = FSDevice.timeToApogee! - timeOffset
         FSDevice.avgDescentRate = apogee/(FSDevice.totalTime! - FSDevice.timeToApogee!)
-        
-        
-        
-        
     }
     
     
